@@ -1,0 +1,39 @@
+Tabel Users
+- user_id (primary key)
+- username (text UNIQUE NOT NULL)
+- password (text NOT NULL)
+- email (text UNIQUE NOT NULL) 
+- whatsapp(text UNIQUE NOT NULL)
+- status (enum: active/pending/reject NOT NULL)
+[Rencananya mau buat regis pake nomor WA biar bisa login langsung]
+[Bisa pesen ruangan setelah email diaktivasi]
+
+
+Tabel Rooms
+- room_id (primary key)
+- room name (text, UNIQUE NOT NULL)
+- room building (text)
+- room photo (?)
+- room description (text)
+- availability (enum: available/maintanance< NOT NULL)
+
+Tabel Forms
+- form_id (primary key)
+- room_id (NOT NULL)
+- Nama kegiatan (text NOT NULL)
+- Jumlah Peserta (int NOT NULL)
+- identitas peminjam (enum: FTUI/NonFTUI/Dosen NOT NULL)
+- FTUI: Surat Izin Kegiatan (SIK) (pdf UNIQUE NOT NULL)
+- Non-FTUI: Surat Dekan FTUI (pdf UNIQUE NOT NULL)
+- Fasilitas yang dibutuhkan beserta jumlahnya (text)
+- konsumsi (ada/tidak) (bool NOT NULL)
+
+Tabel Books
+- book_id (primary key)
+- user_id (NOT NULL)
+- form_id (UNIQUE NOT NULL)
+- time (timestamp NOT NULL)
+- book_date (date NOT NULL)
+- book_time_start (time NOT NULL)
+- book_duration (int NOT NULL)
+

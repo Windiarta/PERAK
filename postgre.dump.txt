@@ -1,0 +1,20 @@
+## PostgreSQL dump file
+
+CREATE TYPE stat AS ENUM ('ACTIVE', 'PENDING', 'REJECTED');
+CREATE TABLE users (
+user_id serial PRIMARY KEY,
+username text UNIQUE NOT NULL,
+password text NOT NULL,
+email text UNIQUE NOT NULL, 
+whatsapp text UNIQUE NOT NULL, 
+status stat NOT NULL);
+
+CREATE TYPE avai AS ENUM ('AVAILABLE', 'MAINTANANCE');
+CREATE TABLE rooms (
+room_id serial PRIMARY KEY,
+room_name text UNIQUE NOT NULL,
+room_building text,
+room_photo text UNIQUE,
+room_description text,
+availability avai NOT NULL);
+

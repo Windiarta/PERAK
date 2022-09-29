@@ -12,10 +12,10 @@ const { route } = require('express/lib/application');
 
 //Insiasi koneksi ke database
 const db = new Client({
-    user: 'windiarta_sbd',
-    host: 'windiarta-sbd.postgres.database.azure.com',
+    user: 'windiarta_sbd',      //nanti jadiin environment variable
+    host: 'windiarta-sbd.postgres.database.azure.com', //nanti jadiin environment variable
     database: 'perak',
-    password: 'Jaguar88',
+    password: 'Jaguar88', //nanti jadiin environment variable
     port: 5432,
     sslmode: 'require',
     ssl: true
