@@ -18,3 +18,12 @@ room_photo text UNIQUE,
 room_description text,
 availability avai NOT NULL);
 
+
+CREATE TABLE books (
+book_id serial PRIMARY KEY,
+user_id integer NOT NULL,
+form_id integer UNIQUE NOT NULL, 
+now time NOT NULL,
+book_date date NOT NULL,
+book_time_start time NOT NULL,
+book_duration int NOT NULL);

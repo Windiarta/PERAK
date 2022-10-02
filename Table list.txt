@@ -17,6 +17,7 @@ Tabel Rooms
 - room description (text)
 - availability (enum: available/maintanance< NOT NULL)
 
+//Not yet
 Tabel Forms
 - form_id (primary key)
 - room_id (NOT NULL)
@@ -32,7 +33,7 @@ Tabel Books
 - book_id (primary key)
 - user_id (NOT NULL)
 - form_id (UNIQUE NOT NULL)
-- time (timestamp NOT NULL)
+- now (timestamp NOT NULL)
 - book_date (date NOT NULL)
 - book_time_start (time NOT NULL)
 - book_duration (int NOT NULL)
