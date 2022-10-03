@@ -5,6 +5,8 @@ Tabel Users
 - email (text UNIQUE NOT NULL) 
 - whatsapp(text UNIQUE NOT NULL)
 - status (enum: active/pending/reject NOT NULL)
+- admin (boolean NOT NULL)
+- role (roles ["mhs.FTUI", "mhs.NON-FTUI", "Dosen"] NOT NULL)
 [Rencananya mau buat regis pake nomor WA biar bisa login langsung]
 [Bisa pesen ruangan setelah email diaktivasi]
 
@@ -21,11 +23,12 @@ Tabel Rooms
 Tabel Forms
 - form_id (primary key)
 - room_id (NOT NULL)
-- Nama kegiatan (text NOT NULL)
-- Jumlah Peserta (int NOT NULL)
+- activity_name (text NOT NULL)
+- attendance (int NOT NULL)
 - identitas peminjam (enum: FTUI/NonFTUI/Dosen NOT NULL)
-- FTUI: Surat Izin Kegiatan (SIK) (pdf UNIQUE NOT NULL)
-- Non-FTUI: Surat Dekan FTUI (pdf UNIQUE NOT NULL)
+- letter (text UNIQUE NOT NULL)
+	- FTUI: Surat Izin Kegiatan (SIK) (pdf UNIQUE NOT NULL)
+	- Non-FTUI: Surat Dekan FTUI (pdf UNIQUE NOT NULL)
 - Fasilitas yang dibutuhkan beserta jumlahnya (text)
 - konsumsi (ada/tidak) (bool NOT NULL)
 
