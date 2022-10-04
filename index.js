@@ -6,15 +6,16 @@ const nodemailer = require("nodemailer");
 const dotenv = require('dotenv');
 dotenv.config();
 const config = process.env;
+const user = config.user;
+const pass = config.pass;
 
 module.exports = {
     secret: config.key,
-    user: config.user, 
-    pass: config.pass
+    user: user, 
+    pass: pass
 };
 
-const user = config.user;
-const pass = config.pass;
+
 const transport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -33,11 +34,11 @@ const { route } = require('express/lib/application');
 
 //Insiasi koneksi ke database
 const db = new Client({
-    user: 'windiarta_sbd',      //nanti jadiin environment variable
-    host: 'windiarta-sbd.postgres.database.azure.com', //nanti jadiin environment variable
-    database: 'perak',
-    password: 'Jaguar88', //nanti jadiin environment variable
-    port: 5432,
+    user: config.dbuser,
+    host: config.dbserver,
+    database: config.dbdatabase,
+    password: config.dbpass,
+    port: config.dbport,
     sslmode: 'require',
     ssl: true
 });
@@ -241,7 +242,6 @@ router.get('/logout', (req, res) => {
 app.use('/', router);
 app.listen(process.env.PORT || 5230, () => {
     console.log(`App Started on PORT ${process.env.PORT || 5230}`);
-    console.log(`${process.env.user}`);
 });
 
 // Src: https://www.simplilearn.com/tutorials/javascript-tutorial/email-validation-in-javascript
