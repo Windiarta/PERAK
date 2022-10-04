@@ -2,7 +2,28 @@
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
- 
+const nodemailer = require("nodemailer");
+const dotenv = require('dotenv');
+dotenv.config();
+const config = process.env;
+
+module.exports = {
+    secret: config.key,
+    user: config.user, 
+    pass: config.pass
+};
+
+const user = config.user;
+const pass = config.pass;
+const transport = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+        user: user,
+        pass: pass,
+    },
+});
+
+
 //Initialize the app as an express app
 const app = express();
 const router = express.Router();
@@ -56,11 +77,156 @@ var temp;
 router.get('/', (req, res) => {
     temp = req.session;
     if (temp.username) { //jika user terdaftar maka akan masuk ke halaman utama
-        return res.send('Bookpage');
+        return res.send('mainpage');
     } else { //login / register page
-        res.send('Homepage');
+        res.send('login');
     }
 });
+
+/**
+ * Router Login
+ * Method: Post
+ * Usage: Check username & password
+ *        Creat login session
+ */
+router.post('/login', (req, res) =>{
+    temp = req.session;
+    temp.username = req.body.username;
+    temp.password = req.body.pass;
+    
+    /**
+     * Database Access : Collecting Login Information
+     */
+    const query = `SELECT password FROM users WHERE username = '${temp.username}'`;
+    db.query(query, (err, result)=>{
+        if(err || !result.rows[0]){
+            console.log('Username doesn\'t exist');
+            res.end('Login Username Fail')
+        } else {
+            /**
+             * Checking Password
+             */
+            bcrypt.compare(temp.password, result.rows[0].password, (err, result)=>{
+                if(err || !result){
+                    console.log('Incorrect password');
+                    res.end('Login Password Fail')
+                } 
+                res.end('Login Success');
+            });
+        }
+    });
+});
+
+/**
+ * Router Validation
+ * Method: Post
+ * Usage: Validate user using (EMAIL/PHONE NUMBER)
+ */
+router.post('/validation', (req, res)=>{
+    if(ValidateEmail(req.body.email)){
+        temp = req.session;
+        temp.email = req.body.email;
+        temp.whatsapp = req.body.whatsapp;
+        /**
+         * DO VERIFICATION
+         */
+        const query = `SELECT user_id FROM users WHERE username = '${req.body.username}';`;
+        const query1 = `SELECT user_id FROM users WHERE email = '${req.body.email}';`;
+        const query2 = `SELECT user_id FROM users WHERE whatsapp = '${req.body.whatsapp}';`;
+        db.query(query, (err, result)=>{
+            if(err){
+                console.log('Gagal Akses Database');
+                res.end('Verification 0 Failed in Accessing Database');
+            } else if (result[0]){
+                console.log('Username sudah terdaftar, silahkan gunakan username lain');
+                res.end('Duplicate Username');
+            } else {
+                db.query(query1, (err1, result1)=>{
+                    if(err){
+                        console.log('Gagal Akses Database');
+                        res.end('Verification 1 Failed in Accessing Database');
+                    } else if (result[0]){
+                        console.log('Email sudah terdaftar, silahkan gunakan email lain');
+                        res.end('Duplicate email');
+                    } else {
+                        db.query(query2, (err2, result2)=>{
+                            if(err){
+                                console.log('Gagal Akses Database');
+                                res.end('Verification 2 Failed in Accessing Database');
+                            } else if (result[0]){
+                                console.log('Nomor Whatsapp sudah terdaftar, silahkan gunakan nomor lain');
+                                res.end('Duplicate Whatsapp Number');
+                            } else {
+                                /**
+                                 * VERIFIKASI EMAIL/Nomor WA
+                                 * Src: https://betterprogramming.pub/how-to-create-a-signup-confirmation-email-with-node-js-c2fea602872a
+                                 */
+                                res.send('Check Your Email!');
+                                confirmationCode = Math.floor(Math.random()*1000000);
+                                temp.code = confirmationCode;
+                                nodemailer.sendConfirmationEmail(temp.username, temp.email, confirmationCode);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    } else {
+        console.log("Invalid email address");
+        res.end("Invalid email address");
+    }
+});
+
+
+
+/**
+ * Router Register
+ * Method: Post
+ * Usage: Create email verification
+ *        Export new user to database
+ */
+router.post('/register', (req, res)=>{
+    temp = req.session;
+    /**
+     * Password hashing
+     */
+    if(req.confirmationCode == temp.code){
+        bcrypt.hash(req.body.password, 10, (err, hash)=>{
+            if(err){
+                return res.status(500).json({
+                    error: err
+                });
+            }
+            usr = req.body.username;
+            email = req.body.email;
+            whatsapp = req.body.whatsapp;
+            stats = req.body.status;
+            adm = req.body.admin;
+            role = req.body.role;
+            const query = `INSERT INTO users VALUES ('${usr}', '${hash}', 
+            '${email}', '${whatsapp}', '${stats}', '${adm}', '${role}');`;
+
+            db.query(query, (err, result)=>{
+                if(err){
+                    console.log('Gagal Registrasi');
+                    res.end('Registration Failed in Accessing Database');
+                } else {
+                    console.log(result);
+                    res.end('Registration Success, Please Login');
+                    res.redirect('/login');
+                }
+            });
+            res.end('Done');
+        })
+    } else {
+        req.send('Verification Failed');
+        console.log('code generated: ', temp.code);
+        console.log('code input: ', req.confirmationCode);
+        req.redirect('/register');
+    }
+})
+
+
 
 //Router 32: Menghapus Session (logout)
 router.get('/logout', (req, res) => {
@@ -75,4 +241,33 @@ router.get('/logout', (req, res) => {
 app.use('/', router);
 app.listen(process.env.PORT || 5230, () => {
     console.log(`App Started on PORT ${process.env.PORT || 5230}`);
+    console.log(`${process.env.user}`);
 });
+
+// Src: https://www.simplilearn.com/tutorials/javascript-tutorial/email-validation-in-javascript
+function ValidateEmail(input) {
+    var validRegex = "/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/";
+    if (input.value.match(validRegex)) {
+        alert("Valid email address!");
+        document.form1.text1.focus();
+        return true;
+    } else {
+        alert("Invalid email address!");
+        document.form1.text1.focus();
+        return false;
+    }
+}
+
+module.exports.sendConfirmationEmail = (name, email, confirmationCode) => {
+    console.log("Check");
+    transport.sendMail({
+        from: user,
+        to: email,
+        subject: "Please confirm your account",
+        html: `<h1>Email Confirmation</h1>
+            <h2>Hello ${name}</h2>
+            <p>Thank you for subscribing. Please confirm your email by insert this code</p>
+            <h1><center><b>${confirmationCode}</b></center></h1>
+            </div>`,
+    }).catch(err => console.log(err));
+};

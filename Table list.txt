@@ -8,7 +8,7 @@ Tabel Users
 - admin (boolean NOT NULL)
 - role (roles ["mhs.FTUI", "mhs.NON-FTUI", "Dosen"] NOT NULL)
 [Rencananya mau buat regis pake nomor WA biar bisa login langsung]
-[Bisa pesen ruangan setelah email diaktivasi]
+[Bisa pesen ruangan setelah email/wa diaktivasi]
 
 
 Tabel Rooms
