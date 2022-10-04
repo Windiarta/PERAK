@@ -30,3 +30,15 @@ now time NOT NULL,
 book_date date NOT NULL,
 book_time_start time NOT NULL,
 book_duration int NOT NULL);
+
+
+CREATE TYPE facilities AS (
+name text,
+amount integer);
+CREATE TABLE forms (
+form_id serial PRIMARY KEY,
+room_id integer NOT NULL,
+activity_name text NOT NULL,
+letter text,
+facility facilities[],
+consumption bool NOT NULL);

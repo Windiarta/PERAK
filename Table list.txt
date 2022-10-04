@@ -19,18 +19,16 @@ Tabel Rooms
 - room description (text)
 - availability (enum: available/maintanance< NOT NULL)
 
-//Not yet
 Tabel Forms
 - form_id (primary key)
 - room_id (NOT NULL)
 - activity_name (text NOT NULL)
 - attendance (int NOT NULL)
-- identitas peminjam (enum: FTUI/NonFTUI/Dosen NOT NULL)
-- letter (text UNIQUE NOT NULL)
+- letter (text)
 	- FTUI: Surat Izin Kegiatan (SIK) (pdf UNIQUE NOT NULL)
 	- Non-FTUI: Surat Dekan FTUI (pdf UNIQUE NOT NULL)
-- Fasilitas yang dibutuhkan beserta jumlahnya (text)
-- konsumsi (ada/tidak) (bool NOT NULL)
+- facility : Fasilitas yang dibutuhkan beserta jumlahnya (array(composite: name, amount))
+- consumption (ada/tidak) (bool NOT NULL)
 
 Tabel Books
 - book_id (primary key)
