@@ -4,6 +4,7 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const nodemailer = require("nodemailer");
 const dotenv = require('dotenv');
+const serverless = require('serverless-http');
 dotenv.config();
 const config = process.env;
 const user = config.user;
@@ -31,6 +32,7 @@ const router = express.Router();
 const { Client } = require('pg');
 const bcrypt = require('bcrypt');
 const { route } = require('express/lib/application');
+
 
 //Insiasi koneksi ke database
 const db = new Client({
@@ -239,7 +241,10 @@ router.get('/logout', (req, res) => {
     });
 });
 
-app.use('/', router);
+// app.use('/', router);
+app.use(`/.netlify/functions/api`, router);
+module.exports = app;
+module.exports.handler = serverless(app);
 app.listen(process.env.PORT || 5230, () => {
     console.log(`App Started on PORT ${process.env.PORT || 5230}`);
 });
