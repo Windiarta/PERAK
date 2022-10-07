@@ -34,11 +34,11 @@ const { route } = require('express/lib/application');
 
 //Insiasi koneksi ke database
 const db = new Client({
-    user: dbuser,
-    host: dbserver,
-    database: dbdatabase,
-    password: dbpass,
-    port: dbport,
+    user: config.dbuser,
+    host: config.dbserver,
+    database: config.dbdatabase,
+    password: config.dbpass,
+    port: 5432,
     sslmode: 'require',
     ssl: true
 });
