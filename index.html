@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <title>BOOKBOOKEVERYWHERE</title>
+        <link rel="stylesheet" href="css/CSS file.css">
+    </head>
+
+    <body class="bodybg">
+        <div>
+            <div class="head">
+                <a href="/" title="Home">
+                    <img src="img/Header.png" style="background-color: white;" alt="BOOKBOOKEVERYWHERE">
+                </a>
+            </div>
+            <div class="backgroundbox" style="display:flex">
+                <div class="loginbox" id="login">
+                    <div class="subheadertxt">
+                        <b>Login</b>
+                    </div>
+                    <div class="basictxt">
+                        Username: 
+                    </div>
+                    <div>
+                        <input type="text" class="inputbox" id="username" placeholder="username">
+                    </div>
+                    <div class="basictxt">
+                        Password: 
+                    </div>
+                    <div>
+                        <input type="password" class="inputbox" id="password" placeholder="password">
+                    </div>
+                    <div>
+                        <input type="button" class="button" id="submits" value="Login">  
+                    </div>
+                    <div class="subbasictxt">
+                        Not Have Account?
+                        <a href="/registration" class="link">Sign Up</a>
+                    </div>
+    
+                </div>
+                <div>
+                    <div class="subheadertxt" style="margin-top: 50px;">
+                        <b>BOOKBOOK EVERYWHERE</b>
+                    </div>
+                    <div class="basictxt">
+                        Description here
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script>
+            jQuery(document).ready(function($) {
+                var username, pass;
+                $('#submits').click(function() {
+                    username = $('#username').val();
+                    pass = $('#password').val();
+                    
+                    $.post('/login', { username: username, pass: pass }, function(data) {
+                        if (data === 'done') {
+                            window.location.href = '/main';
+                            window.alert('Login Sukses');
+                        }
+                        else if (data === 'fail'){
+                            window.alert('Login Gagal : Username Salah');
+                        } 
+                        else if (data === 'fail2'){
+                            window.alert('Login Gagal : Password Salah');
+                        }
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>
