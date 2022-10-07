@@ -1,4 +1,4 @@
 # Ignore files related to API keys
 .env
-node_module
-functions
+/node_module
+/functions
