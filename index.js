@@ -128,10 +128,11 @@ router.post('/validation', (req, res)=>{
     if(ValidateEmail(req.body.email)){
         temp = req.session;
         temp.email = req.body.email;
-        temp.username = req.body.username;
         temp.whatsapp = req.body.whatsapp;
         /**
-         * DO VERIFICATION
+         * DO VERIFICATION 
+         * Note: Harus revisi: 
+         * Nanti router ini gabung router register
          */
         const query = `SELECT user_id FROM users WHERE username = '${req.body.username}';`;
         const query1 = `SELECT user_id FROM users WHERE email = '${req.body.email}';`;
@@ -160,21 +161,16 @@ router.post('/validation', (req, res)=>{
                                 console.log('Nomor Whatsapp sudah terdaftar, silahkan gunakan nomor lain');
                                 res.end('Duplicate Whatsapp Number');
                             } else {
-                                /**
-                                 * VERIFIKASI EMAIL/Nomor WA
-                                 * Src: https://betterprogramming.pub/how-to-create-a-signup-confirmation-email-with-node-js-c2fea602872a
-                                 */
                                 res.send('Check Your Email!');
                                 confirmationCode = Math.floor(Math.random()*1000000);
                                 temp.code = confirmationCode;
-                                //nodemailer.sendConfirmationMail(temp.username, temp.email, confirmationCode);
                                 var mailOptions = {
                                     from: `${temp.username}`,
                                     to: `${temp.email}`,
                                     subject: "Please confirm your account",
                                     html: `<h1>Email Confirmation</h1>
                                         <h2>Hello ${temp.username}</h2>
-                                        <p>Thank you for subscribing. Please confirm your email by insert this code</p>
+                                        <p>Thank you for Registering. Please confirm your email by insert this code</p>
                                         <h1><center><b>${confirmationCode}</b></center></h1>
                                         </div>`
                                 };
@@ -220,24 +216,31 @@ router.post('/register', (req, res)=>{
             usr = req.body.username;
             email = req.body.email;
             whatsapp = req.body.whatsapp;
-            stats = req.body.status;
-            adm = req.body.admin;
+            stats = req.body.status;    //default PENDING
+            adm = req.body.admin;       //default 0
             role = req.body.role;
-            
-            const query = `INSERT INTO users VALUES (1,'${usr}', '${hash}', '${email}', '${whatsapp}', '${stats}', '${adm}', '${role}');`;
-
-            db.query(query, (err, result)=>{
+            const reqQuery = `SELECT MAX(user_id) FROM users;`;
+            db.query(reqQuery, (err, result)=>{
                 if(err){
                     console.log('Gagal Registrasi');
-                    console.log(query);
                     res.end('Registration Failed in Accessing Database');
                 } else {
-                    console.log(result);
-                    res.end('Registration Success, Please Login');
-                    res.redirect('/login');
+                    userId = result.rows[0].max + 1;
+                    const query = `INSERT INTO users VALUES (${userId}, '${usr}', '${hash}', '${email}', '${whatsapp}', '${stats}', '${adm}', '${role}');`;
+
+                    db.query(query, (err, result)=>{
+                        if(err){
+                            console.log('Gagal Registrasi');
+                            console.log(query);
+                            res.end('Registration Failed: Duplicate Input');
+                        } else {
+                            res.end('Registration Success, Please Login');
+                            res.redirect('/login');
+                        }
+                    });
                 }
             });
-            res.end('Done');
+            
         })
     } else {
         req.send('Verification Failed');
