@@ -2,7 +2,7 @@
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const nodemailer = require("nodemailer");
+const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
 dotenv.config();
 const config = process.env;
@@ -18,6 +18,7 @@ module.exports = {
 
 const transport = nodemailer.createTransport({
     service: "Gmail",
+    port:465,
     auth: {
         user: user,
         pass: pass,
@@ -127,6 +128,7 @@ router.post('/validation', (req, res)=>{
     if(ValidateEmail(req.body.email)){
         temp = req.session;
         temp.email = req.body.email;
+        temp.username = req.body.username;
         temp.whatsapp = req.body.whatsapp;
         /**
          * DO VERIFICATION
@@ -165,7 +167,24 @@ router.post('/validation', (req, res)=>{
                                 res.send('Check Your Email!');
                                 confirmationCode = Math.floor(Math.random()*1000000);
                                 temp.code = confirmationCode;
-                                nodemailer.sendConfirmationEmail(temp.username, temp.email, confirmationCode);
+                                //nodemailer.sendConfirmationMail(temp.username, temp.email, confirmationCode);
+                                var mailOptions = {
+                                    from: `${temp.username}`,
+                                    to: `${temp.email}`,
+                                    subject: "Please confirm your account",
+                                    html: `<h1>Email Confirmation</h1>
+                                        <h2>Hello ${temp.username}</h2>
+                                        <p>Thank you for subscribing. Please confirm your email by insert this code</p>
+                                        <h1><center><b>${confirmationCode}</b></center></h1>
+                                        </div>`
+                                };
+                                transport.sendMail(mailOptions, function(error, info){
+                                    if(error){
+                                        console.log(error);
+                                    } else {
+                                        console.log(`Email sent: ` + info.response);
+                                    }
+                                })
                             }
                         });
                     }
@@ -204,12 +223,13 @@ router.post('/register', (req, res)=>{
             stats = req.body.status;
             adm = req.body.admin;
             role = req.body.role;
-            const query = `INSERT INTO users VALUES ('${usr}', '${hash}', 
-            '${email}', '${whatsapp}', '${stats}', '${adm}', '${role}');`;
+            
+            const query = `INSERT INTO users VALUES (1,'${usr}', '${hash}', '${email}', '${whatsapp}', '${stats}', '${adm}', '${role}');`;
 
             db.query(query, (err, result)=>{
                 if(err){
                     console.log('Gagal Registrasi');
+                    console.log(query);
                     res.end('Registration Failed in Accessing Database');
                 } else {
                     console.log(result);
@@ -246,28 +266,13 @@ app.listen(process.env.PORT || 5230, () => {
 
 // Src: https://www.simplilearn.com/tutorials/javascript-tutorial/email-validation-in-javascript
 function ValidateEmail(input) {
-    var validRegex = "/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/";
-    if (input.value.match(validRegex)) {
-        alert("Valid email address!");
-        document.form1.text1.focus();
+    var validRegex = "[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}";
+    if (input.match(validRegex)) {
+        console.log("Valid email address!");
         return true;
     } else {
-        alert("Invalid email address!");
-        document.form1.text1.focus();
+        console.log("Invalid email address!");
         return false;
     }
 }
 
-module.exports.sendConfirmationEmail = (name, email, confirmationCode) => {
-    console.log("Check");
-    transport.sendMail({
-        from: user,
-        to: email,
-        subject: "Please confirm your account",
-        html: `<h1>Email Confirmation</h1>
-            <h2>Hello ${name}</h2>
-            <p>Thank you for subscribing. Please confirm your email by insert this code</p>
-            <h1><center><b>${confirmationCode}</b></center></h1>
-            </div>`,
-    }).catch(err => console.log(err));
-};
