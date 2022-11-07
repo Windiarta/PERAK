@@ -71,19 +71,56 @@ app.use(
 
 app.set('views', './views');
 app.set('view engine', 'ejs');
- 
+
 var temp;
 
 //ROUTERS GET
-//Router 1: Menampilkan landing page (login/register)
+//Router 1: Menampilkan landing page (ada opsi login/register)
 router.get('/', (req, res) => {
     temp = req.session;
     if (temp.username) { //jika user terdaftar maka akan masuk ke halaman utama
-        return res.send('mainpage');
-    } else { //login / register page
-        res.send('login');
+        res.send('Mainpage');
+        //res.render('Mainpage');
+    } else { //login / register page 
+        res.send('Home');
+        //res.render('HomePage');
     }
 });
+
+router.get('/login-page', (req, res) => {
+    res.send('Login');
+    //res.render('LoginPage');
+})
+
+router.get('/register-page', (req, res) => {
+    res.send('Register');
+    //res.render('RegisterPage');
+})
+
+router.get('/home', (req, res) => {
+    res.send('Home');
+    //res.render('HomePage');
+})
+
+router.get('/facilities', (req, res) => {
+    res.send('Facilities');
+    //res.render('FacilitiesPage');
+})
+
+router.get('/schedule', (req, res) => {
+    res.send('Schedule');
+    //res.render('Schedule');
+})
+
+router.get('/order-details', (req, res) => {
+    res.send('OrderDetails');
+    //res.render('OrderDetailsPage');
+})
+
+router.get('/order-resume', (req, res) => {
+    res.send('OrderResume');
+    //res.render('ResumePage')
+})
 
 /**
  * Router Login
