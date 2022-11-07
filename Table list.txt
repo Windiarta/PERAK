@@ -36,6 +36,6 @@ Tabel Books
 - form_id (UNIQUE NOT NULL)
 - now (timestamp NOT NULL)
 - book_date (date NOT NULL)
-- book_time_start (time NOT NULL)
+- book_time_start (int NOT NULL)
 - book_duration (int NOT NULL)
 

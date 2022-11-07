@@ -68,6 +68,9 @@ app.use(
     })
 );
 
+app.use(express.static(__dirname+'/public'));
+app.use('/css', express.static(__dirname + 'public/css'))
+app.use('/img', express.static(__dirname + 'public/images'))
 
 app.set('views', './views');
 app.set('view engine', 'ejs');
@@ -79,11 +82,11 @@ var temp;
 router.get('/', (req, res) => {
     temp = req.session;
     if (temp.username) { //jika user terdaftar maka akan masuk ke halaman utama
-        res.send('Mainpage');
-        //res.render('Mainpage');
+        //res.send('Mainpage');
+        res.render('Mainpage');
     } else { //login / register page 
-        res.send('Home');
-        //res.render('HomePage');
+        //res.send('Home');
+        res.render('HomePage');
     }
 });
 
@@ -123,6 +126,78 @@ router.get('/order-resume', (req, res) => {
 })
 
 /**
+ * Router RoomCheck
+ * Method Post
+ * Usage: Check Room Availability
+ */
+router.post('/check', (req, res) => {
+    if(temp){
+        room_id = req.body.roomId;
+        check_start = req.body.start;
+        check_duration = req.body.duration;
+        check_end = check_start + check_duration;
+        book_date = req.body.date;
+        const query1 = `SELECT form_id FROM forms WHERE room_id = ${room_id}`;
+        db.query(query1, (err, result) => {
+            if(err){
+                console.log('Couldn\'t connect to database: from /check');
+                res.end('Couldn\'t connect to daatabase: from /check');
+            } else {
+                const queryRoom = `SELECT availibility FROM books WHERE room_id = ${room_id}`;
+                db.query(queryRoom, (err, resultRoom) => {
+                    if (err){
+                        console.log('Cannot access database in availability check');
+                        res.end('Cannot access database in availability check');
+                    } else {
+                        if (resultRoom[0].rows === 'AVAILABLE' || resultRoom[0].rows === 'available'){
+                           i = 0;
+                            while (result[i].rows){
+                                const query = `SELECT book_time_start, book_duration FROM books WHERE (book_date = ${book_date} && form_id = ${result[i].rows})`;
+                                flag = 0;
+                                db.query(query, (err, result1)=>{
+                                    if(err){
+                                        console.log('Cannot access database in booking system');
+                                        res.end('Cannot access database in booking system');
+                                    } else {
+                                        book_start = result1[0].rows[0];
+                                        book_duration = result1[0].rows[1];
+                                        book_end = book_start + book_duration;
+                                        //case 1: start when book not finished
+                                        if (check_start > book_start && check_start < book_end){
+                                            console.log("Start before others end");
+                                            flag = 1;
+                                        }
+                                        //case 2: end when book already started
+                                        if (check_end > book_start && check_end < book_end){
+                                            console.log("End before others start");
+                                            flag = 1;
+                                        }
+                                    }
+                                })
+                                if (flag == 1){
+                                    break;
+                                } i++;
+                            } 
+                        } else {
+                            flag = 1;
+                            res.end("Room under maintanance");
+                        }
+                    }
+                })
+                if (flag == 1){
+                    res.end(`Room Not Available That Time`);
+
+                } else {
+                    res.end(`Room Available from ${check_start}.00 WIB to ${check_end}.00 WIB`);
+                }
+            }
+        })
+    }
+})
+
+
+
+/**
  * Router Login
  * Method: Post
  * Usage: Check username & password
@@ -156,6 +231,8 @@ router.post('/login', (req, res) =>{
     });
 });
 
+var confirmationCode;
+
 /**
  * Router Validation
  * Method: Post
@@ -168,8 +245,6 @@ router.post('/validation', (req, res)=>{
         temp.whatsapp = req.body.whatsapp;
         /**
          * DO VERIFICATION 
-         * Note: Harus revisi: 
-         * Nanti router ini gabung router register
          */
         const query = `SELECT user_id FROM users WHERE username = '${req.body.username}';`;
         const query1 = `SELECT user_id FROM users WHERE email = '${req.body.email}';`;
@@ -200,6 +275,7 @@ router.post('/validation', (req, res)=>{
                             } else {
                                 res.send('Check Your Email!');
                                 confirmationCode = Math.floor(Math.random()*1000000);
+                                if(confirmationCode < 100000) {confirmationCode += 100000;}
                                 temp.code = confirmationCode;
                                 var mailOptions = {
                                     from: `${temp.username}`,
@@ -230,8 +306,6 @@ router.post('/validation', (req, res)=>{
     }
 });
 
-
-
 /**
  * Router Register
  * Method: Post
@@ -256,27 +330,30 @@ router.post('/register', (req, res)=>{
             stats = req.body.status;    //default PENDING
             adm = req.body.admin;       //default 0
             role = req.body.role;
-            const reqQuery = `SELECT MAX(user_id) FROM users;`;
-            db.query(reqQuery, (err, result)=>{
-                if(err){
-                    console.log('Gagal Registrasi');
-                    res.end('Registration Failed in Accessing Database');
-                } else {
-                    userId = result.rows[0].max + 1;
-                    const query = `INSERT INTO users VALUES (${userId}, '${usr}', '${hash}', '${email}', '${whatsapp}', '${stats}', '${adm}', '${role}');`;
+            verif = req.body.verificationCode;
+            if(verif == confirmationCode){
+                const reqQuery = `SELECT MAX(user_id) FROM users;`;
+                db.query(reqQuery, (err, result)=>{
+                    if(err){
+                        console.log('Gagal Registrasi');
+                        res.end('Registration Failed in Accessing Database');
+                    } else {
+                        userId = result.rows[0].max + 1;
+                        const query = `INSERT INTO users VALUES (${userId}, '${usr}', '${hash}', '${email}', '${whatsapp}', '${stats}', '${adm}', '${role}');`;
 
-                    db.query(query, (err, result)=>{
-                        if(err){
-                            console.log('Gagal Registrasi');
-                            console.log(query);
-                            res.end('Registration Failed: Duplicate Input');
-                        } else {
-                            res.end('Registration Success, Please Login');
-                            res.redirect('/login');
-                        }
-                    });
-                }
-            });
+                        db.query(query, (err, result)=>{
+                            if(err){
+                                console.log('Gagal Registrasi');
+                                console.log(query);
+                                res.end('Registration Failed: Duplicate Input');
+                            } else {
+                                res.end('Registration Success, Please Login');
+                                res.redirect('/login');
+                            }
+                        });
+                    }
+                });
+            }
             
         })
     } else {
@@ -286,7 +363,6 @@ router.post('/register', (req, res)=>{
         req.redirect('/register');
     }
 })
-
 
 
 //Router 32: Menghapus Session (logout)
