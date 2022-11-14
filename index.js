@@ -195,6 +195,20 @@ router.post('/check', (req, res) => {
     }
 })
 
+/**
+ * Router Form
+ * Method Post
+ * Usage: Create Form
+ */
+router.post('/form', (req, res) => {
+    temp = req.session;
+    temp.username = req.body.username;
+    temp.password = req.body.pass;
+
+    const query = `INSERT INTO forms VALUES (SELECT max(form_id) FROM form) + 1, ${room_id}, ${activity_name}, ${attendance}, ${letter}, ${facility}, ${consumption};`;
+    
+
+})
 
 
 /**
