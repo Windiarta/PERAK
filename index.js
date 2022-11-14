@@ -205,8 +205,27 @@ router.post('/form', (req, res) => {
     temp.username = req.body.username;
     temp.password = req.body.pass;
 
-    const query = `INSERT INTO forms VALUES (SELECT max(form_id) FROM form) + 1, ${room_id}, ${activity_name}, ${attendance}, ${letter}, ${facility}, ${consumption};`;
     
+    //facility = ("Object", amount), ("Object2", amount);
+    const query = `INSERT INTO forms VALUES (SELECT count(form_id) FROM forms)+1, ${room_id}, '${activity_name}', ${attendance}, '${letter}', ARRAY[${facility}], ${consumption};`;
+    db.query(query, (err, res) => {
+        if(err){
+            res.end("ERROR");
+        }
+        else {
+            res.send("Form Successfully Registered");
+            //generating booking details
+            const query1 = `INSERT INTO books VALUES (SELECT count(book_id) FROM books)+1, SELECT user_id WHERE username = ${temp.username}, SELECT count(form_id) FROM forms, current_timestamp, ${book_date}, ${book_start}, ${book_duration};`
+            db.query(query, (err1, res1) => {
+                if(err1){
+                    res.end("ERROR");
+                }
+                else {
+                    res.end("Booking Completed");
+                }
+            })
+        }
+    })
 
 })
 
