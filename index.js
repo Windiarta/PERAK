@@ -85,26 +85,25 @@ router.get('/', (req, res) => {
     temp = req.session;
     if (temp.username) { //jika user terdaftar maka akan masuk ke halaman utama
         //res.send('Mainpage');
-        res.render('Mainpage');
+        res.render('Homepage');
     } else { //login / register page 
         //res.send('Home');
-        res.render('HomePage');
+        res.render('Mainpage');
     }
 });
 
-router.get('/login-page', (req, res) => {
-    res.send('Login');
-    //res.render('LoginPage');
+router.get('/login', (req, res) => {
+    //res.send('Login');
+    res.render('Homepage');
 })
 
-router.get('/register-page', (req, res) => {
-    res.send('Register');
-    //res.render('RegisterPage');
+router.get('/register', (req, res) => {
+    //res.send('Register');
+    res.render('register');
 })
 
 router.get('/home', (req, res) => {
-    res.send('Home');
-    //res.render('HomePage');
+    res.render('Homepage');
 })
 
 router.get('/facilities', (req, res) => {
@@ -250,7 +249,7 @@ router.post('/login', (req, res) =>{
     db.query(query, (err, result)=>{
         if(err || !result.rows[0]){
             console.log('Username doesn\'t exist');
-            res.end('Login Username Fail')
+            res.send('fail')
         } else {
             /**
              * Checking Password
@@ -258,9 +257,9 @@ router.post('/login', (req, res) =>{
             bcrypt.compare(temp.password, result.rows[0].password, (err, result)=>{
                 if(err || !result){
                     console.log('Incorrect password');
-                    res.end('Login Password Fail')
+                    res.end('fail2')
                 } 
-                res.end('Login Success');
+                res.end('done');
             });
         }
     });
@@ -360,19 +359,18 @@ router.post('/register', (req, res)=>{
             usr = req.body.username;
             email = req.body.email;
             whatsapp = req.body.whatsapp;
-            stats = req.body.status;    //default PENDING
-            adm = req.body.admin;       //default 0
+            stats = 'PENDING';    //default PENDING
+            adm = 0;       //default 0
             role = req.body.role;
             const query = `INSERT INTO users VALUES ((SELECT max(user_id) FROM users) + 1, '${usr}', '${hash}', '${email}', '${whatsapp}', '${stats}', '${adm}', '${role}');`;
 
-            db.query(query, (err, res)=>{
+            db.query(query, (err, result)=>{
                 if(err){
                     console.log('Gagal Registrasi');
                     console.log(query);
-                    res.end('Registration Failed: Duplicate Input');
+                    res.end('fail');
                 } else {
-                    res.end('Registration Success, Please Login');
-                    res.redirect('/login');
+                    res.end('done');
                 }
             });            
         })

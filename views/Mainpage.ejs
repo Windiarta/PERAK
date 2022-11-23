@@ -13,7 +13,7 @@
     <!-- AOS -->
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
-    <title>INI HOMEPAGE</title>
+    <title>INI MAINPAGE</title>
 </head>
 
 <body>
@@ -655,27 +655,27 @@
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script>
-            jQuery(document).ready(function($) {
-                var username, pass;
-                $('#submitslogin').click(function() {
-                    username = $('#usernamelogin').val();
-                    pass = $('#passwordlogin').val();
+        jQuery(document).ready(function($) {
+            var username, pass;
+            $('#submitslogin').click(function() {
+                username = $('#usernamelogin').val();
+                pass = $('#passwordlogin').val();
                     
-                    $.post('/login', { username: username, pass: pass }, function(data) {
-                        if (data === 'done') {
-                            window.location.href = '/main';
-                            window.alert('Login Sukses');
-                        }
-                        else if (data === 'fail'){
-                            window.alert('Login Gagal : Username Salah');
-                        } 
-                        else if (data === 'fail2'){
-                            window.alert('Login Gagal : Password Salah');
-                        }
-                    });
+                $.post('/login', { username: username, pass: pass }, function(data) {
+                    if (data === 'done') {
+                        window.location.href = '/home';
+                        window.alert('Login Sukses');
+                    }
+                    else if (data === 'fail'){
+                        window.alert('Login Gagal : Username Salah');
+                    } 
+                    else if (data === 'fail2'){
+                        window.alert('Login Gagal : Password Salah');
+                    }
                 });
             });
-        </script>
+        });
+    </script>
 
 
     <!-- AOS -->

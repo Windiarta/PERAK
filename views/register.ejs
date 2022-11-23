@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+    <!-- AOS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+    <title>INI REGISTER PAGE</title>
+</head>
+
+<body>
+    <div class="backgroundbox" style="display:flex">
+        <div class="loginbox" id="register">
+            <div class="subheadertxt">
+                <b>Register</b>
+            </div>
+            <div class="basictxt">
+                Email:
+            </div>
+            <div>
+                <input type="email" class="inputbox" id="email" placeholder="email">
+            </div>
+            <div class="basictxt">
+                whatsapp:
+            </div>
+            <div>
+                <input type="tel" class="inputbox" id="whatsapp" placeholder="08xxxxxxxx">
+            </div>
+            <div class="basictxt">
+                Username:
+            </div>
+            <div>
+                <input type="text" class="inputbox" id="usernames" placeholder="username">
+            </div>
+            <div class="basictxt">
+                Password: (Nanti buat validasi password biar ga typo)
+            </div>
+            <div>
+                <input type="password" class="inputbox" id="passwords" placeholder="password">
+            </div>
+            <div class="basictxt">
+                Role: (nanti buat dropdown: 'FTUI STUDENTS', 'NON-FTUI STUDENTS', 'LECTURER')
+            </div>
+            <div>
+                <input type="text" class="inputbox" id="role" placeholder="FTUI STUDENTS" value="FTUI STUDENTS">
+            </div>
+            <div class="basictxt">
+                Data Validation: (Habis di klik, data lain tidak dapat diganti)
+            </div>
+            <div>
+                <input type="button" class="button" id="validate" value="validate">
+            </div>
+            <div class="basictxt">
+                Code:
+            </div>
+            <div>
+                <input type="number" class="inputbox" id="code" placeholder="CHECK EMAIL">
+            </div>
+            <div>
+                <input type="button" class="button" id="submits" value="Register">
+            </div>
+            <div class="subbasictxt">
+                Already Have Account?
+                <a href="/login" class="link">Log In</a>
+            </div>
+        </div>
+    </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+        jQuery(document).ready(function ($) {
+            var username, pass, email, whatsapp, stats, adm, role, code;
+            $('#validate').click(function () {
+                username = $('#usernames').val();
+                email = $('#email').val();
+                whatsapp = $('#whatsapp').val();
+                $.post('/validation', { username: username, email: email, whatsapp: whatsapp }, function (data) {
+                    window.alert(data);
+                });
+            });
+            $('#submits').click(function () {
+                window.alert("CHECK YOUR EMAIL");
+                username = $('#usernames').val();
+                pass = $('#passwords').val();
+                email = $('#email').val();
+                whatsapp = $('#whatsapp').val();
+                stats = 'PENDING';
+                adm = '0';
+                role = $('#role').val();
+                code = $('#code').val();
+                $.post('/register', { username: username, password: pass, email: email, whatsapp: whatsapp, stats: stats, adm: adm, role: role, verificationCode: code }, function (data) {
+                    if (data === 'done') {
+                        window.alert('Registration Success, Please Login');
+                        window.location.href = '/login';
+                    } else {
+                        window.alert('Registration Failed: Duplicate Input');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
