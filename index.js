@@ -9,6 +9,8 @@ const config = process.env;
 const user = config.user;
 const pass = config.pass;
 
+var confirmationCode;
+
 module.exports = {
     secret: config.key,
     user: user, 
@@ -205,8 +207,27 @@ router.post('/form', (req, res) => {
     temp.username = req.body.username;
     temp.password = req.body.pass;
 
-    const query = `INSERT INTO forms VALUES (SELECT max(form_id) FROM form) + 1, ${room_id}, ${activity_name}, ${attendance}, ${letter}, ${facility}, ${consumption};`;
     
+    //facility = ("Object", amount), ("Object2", amount);
+    const query = `INSERT INTO forms VALUES (SELECT count(form_id) FROM forms)+1, ${room_id}, '${activity_name}', ${attendance}, '${letter}', ARRAY[${facility}], ${consumption};`;
+    db.query(query, (err, res) => {
+        if(err){
+            res.end("ERROR");
+        }
+        else {
+            res.send("Form Successfully Registered");
+            //generating booking details
+            const query1 = `INSERT INTO books VALUES (SELECT count(book_id) FROM books)+1, SELECT user_id WHERE username = ${temp.username}, SELECT count(form_id) FROM forms, current_timestamp, ${book_date}, ${book_start}, ${book_duration};`
+            db.query(query, (err1, res1) => {
+                if(err1){
+                    res.end("ERROR");
+                }
+                else {
+                    res.end("Booking Completed");
+                }
+            })
+        }
+    })
 
 })
 
@@ -245,16 +266,15 @@ router.post('/login', (req, res) =>{
     });
 });
 
-var confirmationCode;
-
 /**
  * Router Validation
  * Method: Post
  * Usage: Validate user using (EMAIL/PHONE NUMBER)
  */
 router.post('/validation', (req, res)=>{
-    if(ValidateEmail(req.body.email)){
+    if (ValidateEmail(req.body.email)) {
         temp = req.session;
+        temp.username = req.body.username;
         temp.email = req.body.email;
         temp.whatsapp = req.body.whatsapp;
         /**
@@ -289,8 +309,7 @@ router.post('/validation', (req, res)=>{
                             } else {
                                 res.send('Check Your Email!');
                                 confirmationCode = Math.floor(Math.random()*1000000);
-                                if(confirmationCode < 100000) {confirmationCode += 100000;}
-                                temp.code = confirmationCode;
+                                if (confirmationCode < 100000) { confirmationCode += 100000; }
                                 var mailOptions = {
                                     from: `${temp.username}`,
                                     to: `${temp.email}`,
@@ -331,7 +350,7 @@ router.post('/register', (req, res)=>{
     /**
      * Password hashing
      */
-    if(req.confirmationCode == temp.code){
+    if (req.body.verificationCode == confirmationCode) {
         bcrypt.hash(req.body.password, 10, (err, hash)=>{
             if(err){
                 return res.status(500).json({
@@ -344,37 +363,25 @@ router.post('/register', (req, res)=>{
             stats = req.body.status;    //default PENDING
             adm = req.body.admin;       //default 0
             role = req.body.role;
-            verif = req.body.verificationCode;
-            if(verif == confirmationCode){
-                const reqQuery = `SELECT MAX(user_id) FROM users;`;
-                db.query(reqQuery, (err, result)=>{
-                    if(err){
-                        console.log('Gagal Registrasi');
-                        res.end('Registration Failed in Accessing Database');
-                    } else {
-                        userId = result.rows[0].max + 1;
-                        const query = `INSERT INTO users VALUES (${userId}, '${usr}', '${hash}', '${email}', '${whatsapp}', '${stats}', '${adm}', '${role}');`;
+            const query = `INSERT INTO users VALUES ((SELECT max(user_id) FROM users) + 1, '${usr}', '${hash}', '${email}', '${whatsapp}', '${stats}', '${adm}', '${role}');`;
 
-                        db.query(query, (err, result)=>{
-                            if(err){
-                                console.log('Gagal Registrasi');
-                                console.log(query);
-                                res.end('Registration Failed: Duplicate Input');
-                            } else {
-                                res.end('Registration Success, Please Login');
-                                res.redirect('/login');
-                            }
-                        });
-                    }
-                });
-            }
-            
+            db.query(query, (err, res)=>{
+                if(err){
+                    console.log('Gagal Registrasi');
+                    console.log(query);
+                    res.end('Registration Failed: Duplicate Input');
+                } else {
+                    res.end('Registration Success, Please Login');
+                    res.redirect('/login');
+                }
+            });            
         })
     } else {
-        req.send('Verification Failed');
-        console.log('code generated: ', temp.code);
-        console.log('code input: ', req.confirmationCode);
-        req.redirect('/register');
+        console.log('Verification Failed');
+        console.log('code generated: ', confirmationCode);
+        console.log('code input: ', req.body.verificationCode);
+        res.end('Verification failed');
+        //res.redirect('/register');
     }
 })
 
