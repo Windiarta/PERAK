@@ -30,6 +30,25 @@ section{
     max-width: 1500px;
 }
 
+.loginbox{
+    margin: auto;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: auto;
+}
+
+.loginbox .passwordlogin{
+    margin: auto;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: auto;
+}
+.loginbox .usernamelogin{
+    display: flex;
+    
+}
 
 .navbar .nav-wrapper{
     position: relative;

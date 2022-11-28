@@ -89,13 +89,13 @@ router.get('/', (req, res) => {
         res.render('Homepage');
     } else { //login / register page 
         //res.send('Home');
-        res.render('Login');
+        res.render('Mainpage');
     }
 });
 
 router.get('/login', (req, res) => {
     //res.send('Login');
-    res.render('Homepage');
+    res.render('Login');
 })
 
 router.get('/register', (req, res) => {
@@ -104,7 +104,7 @@ router.get('/register', (req, res) => {
 })
 
 router.get('/home', (req, res) => {
-    res.render('Homepage');
+    res.render('HomePage');
 })
 
 router.get('/facilities', (req, res) => {
