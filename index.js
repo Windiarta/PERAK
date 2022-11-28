@@ -43,7 +43,8 @@ const db = new Client({
     password: config.dbpass,
     port: config.dbport,
     sslmode: 'require',
-    ssl: true
+    ssl: true,
+
 });
 
 //Melakukan koneksi dan menunjukkan indikasi database terhubung
@@ -88,7 +89,7 @@ router.get('/', (req, res) => {
         res.render('Homepage');
     } else { //login / register page 
         //res.send('Home');
-        res.render('Mainpage');
+        res.render('Login');
     }
 });
 

@@ -80,6 +80,10 @@ section{
     border-radius: 50px;
 }
 
+.Makara-wrapper{
+    margin-right: auto;
+    width: 1000px;
+}
 /* Home Start */
 .home{
     margin-top: 110px;
