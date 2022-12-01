@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\views"
   ],
-  "SelectedNode": "\\README.md",
+  "SelectedNode": "\\views\\register.ejs",
   "PreviewInSolutionExplorer": false
 }

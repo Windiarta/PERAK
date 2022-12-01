@@ -659,12 +659,12 @@
                 var username, pass;
                 $('#submitslogin').click(function() {
                     username = $('#usernamelogin').val();
-                    pass = $('#passwordlogin').val();
+                    password = $('#passwordlogin').val();
                     
-                    $.post('/login', { username: username, pass: pass }, function(data) {
+                    $.post('/login', { username: username, password: password }, function(data) {
                         if (data === 'done') {
-                            window.location.href = '/main';
                             window.alert('Login Sukses');
+                            window.location.href = '/';
                         }
                         else if (data === 'fail'){
                             window.alert('Login Gagal : Username Salah');
