@@ -80,6 +80,16 @@ section{
     border-radius: 50px;
 }
 
+.loginbox{
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    height: auto;
+}
+.Makara-wrapper{
+    margin-right: auto;
+    width: 20%;
+}
 /* Home Start */
 .home{
     margin-top: 110px;

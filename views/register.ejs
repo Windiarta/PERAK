@@ -17,8 +17,28 @@
 </head>
 
 <body>
+    <header>
+        <nav class="navbar">
+            <div class="container nav-wrapper">
+                <a href="#" class="logo">PERAK<span>FTUI</span></a>
+                <div class="menu-wrapper">
+                    <ul class="menu">
+                        <li class="menu-item"><a href="home" class="menu-link active">Home</a></li>
+                        <li class="menu-item"><a href="login" class="menu-link">Login</a></li>
+                        <li class="menu-item"><a href="registration" class="menu-link">Register</a></li>
+                        <li class="menu-item"><a href="#" class="menu-link">About us</a></li>
+                        <li class="menu-item"><a href="#" class="menu-link">Contact</a></li>
+                    </ul>
+                    <a href="#" class="btn-member">Start Renting</a>
+                </div>
+                <div class="menu-toggle bx bxs-grid-alt">
+                </div>
+            </div>
+        </nav>
+
+<body>
     <div class="backgroundbox" style="display:flex">
-        <div class="loginbox" id="register">
+        <div class="registerbox" id="register">
             <div class="subheadertxt">
                 <b>Register</b>
             </div>
@@ -46,11 +66,13 @@
             <div>
                 <input type="password" class="inputbox" id="passwords" placeholder="password">
             </div>
-            <div class="basictxt">
-                Role: (nanti buat dropdown: 'FTUI STUDENTS', 'NON-FTUI STUDENTS', 'LECTURER')
-            </div>
-            <div>
-                <input type="text" class="inputbox" id="role" placeholder="FTUI STUDENTS" value="FTUI STUDENTS">
+            <div class="Roles">
+                <p> Roles <i class="dropdown roles"></i></p>
+                <select>
+                    <option value="FTUI-STUDENTS">FTUI-STUDENTS</option>
+                    <option value="LECTURER">LECTURER</option>
+                    <option value="NON-FTUI STUDENTS">NON-FTUI STUDENTS</option>
+                </select>
             </div>
             <div class="basictxt">
                 Data Validation: (Habis di klik, data lain tidak dapat diganti)
