@@ -93,6 +93,10 @@ router.get('/', (req, res) => {
     }
 });
 
+router.get('/rent', (req, res)=> {
+    res.render('RentPage');
+})
+
 router.get('/login', (req, res) => {
     //res.send('Login');
     res.render('Login');
