@@ -83,14 +83,7 @@ var temp;
 //ROUTERS GET
 //Router 1: Menampilkan landing page (ada opsi login/register)
 router.get('/', (req, res) => {
-    temp = req.session;
-    if (temp.username) { //jika user terdaftar maka akan masuk ke halaman utama
-        //res.send('Mainpage');
-        res.render('Homepage');
-    } else { //login / register page 
-        //res.send('Home');
-        res.render('Mainpage');
-    }
+    res.render('MainPage')
 });
 
 router.get('/rent', (req, res)=> {
@@ -108,7 +101,7 @@ router.get('/register', (req, res) => {
 })
 
 router.get('/home', (req, res) => {
-    res.render('HomePage');
+    res.render('MainPage');
 })
 
 router.get('/facilities', (req, res) => {
@@ -446,11 +439,12 @@ router.post('/update_status', (req, res) => {
 
 
 /** 
- * Router add_room
+ * Router add_facilities
  * Method: Post
- * Usage: add room to database
+ * Usage: add facilities to database
+ * Next Update: operational hours
  */
-router.post('/add_room', (req, res) => {
+router.post('/add_facilities', (req, res) => {
     temp = req.session;
     const query = `SELECT admin FROM users WHERE user_id = '${temp.user_id}';`;
     db.query(query, (err, result) => {
@@ -459,11 +453,26 @@ router.post('/add_room', (req, res) => {
             res.end('Something Error');
         }
         if (result.rows[0].admin) {
-            //code here
-            res.end("admin: success");
-
-
-
+            if (req.body.availability == 1) {
+                avai = 'AVAILABLE';
+            } else avai = 'MAINTAINANCE';
+            if (!req.body.photo) { photo = null; }
+            else { 
+                let text = req.body.photo;
+                const myArray = text.split("/d/");
+                const myId = myArray[1].split("/");
+                photo = myId[0];
+            }
+            const query = `INSERT INTO rooms VALUES ((SELECT count(room_id)+1 FROM rooms), '${req.body.room_name}', '${req.body.room_building}', '${photo}', '${req.body.room_description}', '${avai}');`
+            db.query(query, (err, result1) => {
+                if (err) {
+                    console.log(query);
+                    res.end('Something Error');
+                }
+                res.end('New Facility Successfully Added'); 
+                //res.render("facilities");
+            });
+            
         } else {
             console.log("default user try to access admin pages");
             res.end("admin: failed");
@@ -473,11 +482,11 @@ router.post('/add_room', (req, res) => {
 });
 
 /** 
- * Router remove_room
+ * Router remove_facility
  * Method: Post
- * Usage: remove room to database
+ * Usage: remove facility to database
  */
-router.post('/remove_room', (req, res) => {
+router.post('/remove_facility', (req, res) => {
     temp = req.session;
     const query = `SELECT admin FROM users WHERE user_id = '${temp.user_id}';`;
     db.query(query, (err, result) => {
@@ -486,11 +495,15 @@ router.post('/remove_room', (req, res) => {
             res.end('Something Error');
         }
         if (result.rows[0].admin) {
-            //code here
-            res.end("admin: success");
-
-
-
+            const query = `DELETE FROM rooms WHERE room_id = ${req.body.room_id};`;
+            db.query(query, (err, result1) => {
+                if (err) {
+                    console.log(query);
+                    res.end('Something Error');
+                }
+                res.end('Facility Successfully Deleted');
+                //res.render("facilities");
+            });
         } else {
             console.log("default user try to access admin pages");
             res.end("admin: failed");
@@ -500,11 +513,11 @@ router.post('/remove_room', (req, res) => {
 });
 
 /** 
- * Router edit_room
+ * Router edit_facility
  * Method: Post
- * Usage: edit room to database
+ * Usage: edit facility to database
  */
-router.post('/edit_room', (req, res) => {
+router.post('/edit_facility', (req, res) => {
     temp = req.session;
     const query = `SELECT admin FROM users WHERE user_id = '${temp.user_id}';`;
     db.query(query, (err, result) => {
@@ -513,10 +526,25 @@ router.post('/edit_room', (req, res) => {
             res.end('Something Error');
         }
         if (result.rows[0].admin) {
-            //code here
-            res.end("admin: success");
-
-
+            if (req.body.availability == 1) {
+                avai = 'AVAILABLE';
+            } else avai = 'MAINTAINANCE';
+            if (!req.body.photo) { photo = null; }
+            else {
+                let text = req.body.photo;
+                const myArray = text.split("/d/");
+                const myId = myArray[1].split("/");
+                photo = myId[0];
+            }
+            const query = `UPDATE rooms SET room_name = '${req.body.room_name}', room_building = '${req.body.room_building}', room_photo = '${photo}', room_description = '${req.body.room_description}', availability = '${avai}' WHERE room_id = ${req.body.room_id};`;
+            db.query(query, (err, result1) => {
+                if (err) {
+                    console.log(query);
+                    res.end('Something Error');
+                }
+                res.end('Facility Successfully Updated');
+                //res.render("facilities");
+            });
 
         } else {
             console.log("default user try to access admin pages");
