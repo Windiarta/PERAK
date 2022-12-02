@@ -135,7 +135,7 @@ section{
 }
 .home-wrapper .subheading{
     font-size: 1.125rem;
-    color: #4a4a4a;
+    color: #ffffff;
     max-width: 500px;
     margin: 25px 0;
 }
@@ -284,7 +284,7 @@ section{
     font-size: 40px;
     font-family: var(--heading-font);
     font-weight: 700;
-    color: #4a4a4a;
+    color: #ffffff;
     margin: 10px 0;
 }
 .service-wrapper .subheading-service{
@@ -428,6 +428,9 @@ section{
     color: rgb(224, 224, 12);
 }
 
+.swiper-slide-card-produk{
+    size: 50%;
+}
 .detail-produk .body-card{
     margin: 25px 0;
 }
@@ -444,6 +447,62 @@ section{
 }
 /* produk end */
 
+/* Starting of items */
+.section2 .container {
+    display: flex;
+    width: 100%;
+    height: max-content;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 10px auto;
+  }
+  .section2 .container .items {
+    margin: 10px;
+    width: 200px;
+    height: 300px;
+    background-color: black;
+    border: 2.5px solid white;
+    border-radius: 12px;
+  }
+  .section2 .container .items .name {
+    text-align: center;
+    background-color: rgb(240, 197, 6);
+    height: 25px;
+    padding-top: 4px;
+    color: white;
+    margin: 0;
+  }
+  .section2 .container .items .price {
+    float: left;
+    padding-left: 10px;
+    display: block;
+    width: 100%;
+    color: rgb(255, 0, 0);
+    font-weight: 650;
+  }
+  .section2 .container .items .info {
+    padding-left: 10px;
+    color: rgb(243, 168, 7);
+  }
+  .section2 .container .items .img img {
+    width: 200px;
+    height: 200px;
+    margin: 0;
+    padding: 0;
+    border-radius: 12px;
+    transition-duration: 0.8s;
+  }
+  .section2 .container .items .img {
+    overflow: hidden;
+    margin: 0;
+  }
+  .section2 .container .items:hover .img img {
+    transform: scale(1.2);
+    transition-duration: 0.8s;
+    border-radius: 12px;
+  }
+  /* Ending of items */
+  
 /* Banner 1 start*/
 .banner1{
     color: #fff;
@@ -552,7 +611,7 @@ section{
     font-size: 36px;
     font-family: var(--heading-font);
     font-weight: 700;
-    color: #4a4a4a;
+    color: #ffffff;
     margin: 25px 0;
 }
 .col-slider-testi .card-testi{
@@ -672,7 +731,7 @@ section{
 }
 .col-2-footer li a , .col-3-footer li a, .col-4-footer li a{
     font-size: 18px;
- color: #4a4a4a;
+ color: #ffffff;
 }
 .col-5-footer p{
     margin-top: 30px;
