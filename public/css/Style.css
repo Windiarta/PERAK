@@ -3,7 +3,7 @@
 :root{
     --main-color : #ffffff;
     --second-color : #FFA451;
-    --body-color : #00c8ff;
+    --body-color : black;
 
     --main-font: 'Open Sans', sans-serif;
     --heading-font : 'Raleway', sans-serif;
@@ -357,7 +357,7 @@ section{
     font-size: 40px;
     font-weight: 700;
     font-family: var(--heading-font);
-    color: #4a4a4a;
+    color: #ffffff;
     margin-top: 10px;
 }
 .row1 .toggle-slider i{
@@ -418,7 +418,7 @@ section{
     font-size: 30px;
     font-size: 600;
     font-family: var(--heading-font);
-    color: #4a4a4a;
+    color: #ffffff;
 }
 .detail-produk .review{
     display: flex;

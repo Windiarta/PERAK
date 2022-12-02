@@ -86,10 +86,10 @@ router.get('/', (req, res) => {
     temp = req.session;
     if (temp.username) { //jika user terdaftar maka akan masuk ke halaman utama
         //res.send('Mainpage');
-        res.render('Homepage');
+        res.render('Mainpage');
     } else { //login / register page 
         //res.send('Home');
-        res.render('Mainpage');
+        res.render('Login');
     }
 });
 
@@ -108,7 +108,7 @@ router.get('/register', (req, res) => {
 })
 
 router.get('/home', (req, res) => {
-    res.render('HomePage');
+    res.render('Mainpage');
 })
 
 router.get('/facilities', (req, res) => {
@@ -144,7 +144,7 @@ router.post('/check', (req, res) => {
         check_end = check_start + check_duration;
         book_date = req.body.date;
         const query1 = `SELECT form_id FROM forms WHERE room_id = ${room_id}`;
-        db.query(query1, (err, result) => {
+        db.query(query1, (err, result) => {npm
             if(err){
                 console.log('Couldn\'t connect to database: from /check');
                 res.end('Couldn\'t connect to daatabase: from /check');

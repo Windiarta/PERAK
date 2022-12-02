@@ -66,6 +66,9 @@
             <div>
                 <input type="password" class="inputbox" id="passwords" placeholder="password">
             </div>
+            <div>
+                <input type="pass2" class="inputbox" id="temppass" placeholder="Validate password">
+            </div>
             <div class="Roles">
                 <p> Roles <i class="dropdown roles"></i></p>
                 <select>
@@ -99,30 +102,51 @@
     <script>
         jQuery(document).ready(function ($) {
             var username, pass, email, whatsapp, stats, adm, role, code;
+            var disabled = $("#usernames").prop('disabled');
+            var disabled = $("#email").prop('disabled');
+            var disabled = $("#whatsapp").prop('disabled');
             $('#validate').click(function () {
+                if (disabled) {
+                    $("#usernames").prop('disabled', false);
+                    $("#email").prop('disabled', false);
+                    $("#whatsapp").prop('disabled', false);        // if disabled, enable
+                }
+                else {
+                    $("#usernames").prop('disabled', true);        // if enabled, disable
+                    $("#email").prop('disabled', true); 
+                    $("#whatsapp").prop('disabled', true); 
+                }
                 username = $('#usernames').val();
                 email = $('#email').val();
                 whatsapp = $('#whatsapp').val();
-                $.post('/validation', { username: username, email: email, whatsapp: whatsapp }, function (data) {
-                    window.alert(data);
-                });
+                $.post('/validation', { username: username, email: email, whatsapp: whatsapp }, function (data) {     
+                window.alert(data);
+                }); 
             });
 
             $('#submits').click(function () {
                 username = $('#usernames').val();
                 pass = $('#passwords').val();
+                pass2 = $('temppass').val();
                 email = $('#email').val();
                 whatsapp = $('#whatsapp').val();
                 role = $('#role').val();
                 code = $('#code').val();
-                $.post('/register', { username: username, password: pass, email: email, whatsapp: whatsapp, role: role, verificationCode: code }, function (data) {
-                    if (data === 'done') {
-                        window.alert('Registration Success, Please Login');
-                        window.location.href = '/login';
-                    } else {
-                        window.alert('Registration Failed: Duplicate Input');
-                    }
-                });
+                if (pass === pass2){
+                    $.post('/register', { username: username, password: pass, email: email, whatsapp: whatsapp, role: role, verificationCode: code }, function (data) {
+                        if (data === 'done') {
+                            window.alert('Registration Success, Please Login');
+                            window.location.href = '/login';
+                        }   else {
+                            window.alert('Registration Failed: Duplicate Input');
+                        }
+                    });
+                }
+                else{
+                    window.alert("Password doesn't macth");
+                }
+
+                
             });
         });
     </script>

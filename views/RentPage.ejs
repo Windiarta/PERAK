@@ -13,7 +13,7 @@
     <!-- AOS -->
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
-    <title>PERAK RENTPAGE</title>
+    <title>INI REGISTER PAGE</title>
 </head>
 
 <body>
@@ -29,75 +29,127 @@
                         <li class="menu-item"><a href="#" class="menu-link">About us</a></li>
                         <li class="menu-item"><a href="#" class="menu-link">Contact</a></li>
                     </ul>
-                    <a href="#" class="btn-member">Start Renting</a>
+                    <a href="rent" class="btn-member">Start Renting</a>
                 </div>
                 <div class="menu-toggle bx bxs-grid-alt">
                 </div>
             </div>
         </nav>
 
-
-        </div1>
-
-
-        <section class="home" id="home">
-            <div class="container home-wrapper">
-                <div class="content-left" data-aos="fade-right">
-                    <h1 class="heading">FACILITY RENTING  MADE EASIER with PERAK<span>FTUI</span></h1>
-                    <p class="subheading">
-                        PERAK make room rents easier for many people to use it and improve the accessibility of the facilities that are available in the Faculty of Engineering.
-                    </p>
-                    <div class="form-panel">
-                        <img src="assets/img/form.png" alt="">
-                        <div class="title-form">
-                            <p>Get the schedule</p>
-                        </div>
-                        <div class="form-location">
-                            <i class='bx bxs-map loc'></i>
-                            <div class="location">
-                                <p>Location <i class='bx bx-chevron-down'></i></p>
-                                <select>
-                                    <option value="">Gedung S</option>
-                                    <option value="">Gedung K</option>
-                                    <option value="">MRPQ</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-date">
-                            <i class='bx bxs-calendar-alt cal'></i>
-                            <div class="date">
-                                <p>Date <i class='bx bx-chevron-down'></i></p>
-                                <input type="date">
-                            </div>
-                        </div>
-                        <div class="btn-search">
-                            <i class='bx bx-search'></i>
-                        </div>
-                    </div>
-                    <p class="sugestion">Popular search : Laptek, Gedung S, Gedung K</p>
-                </div>
-                <div class="content-right" data-aos="fade-left">
-                    <div class="img-wrapper">
-                        <img src="assets/img/hero-tavel.png" alt="">
-                    </div>
-
-                </div>
-
+<body>
+    <div class="backgroundbox" style="display:flex">
+        <div class="registerbox" id="register">
+            <div class="subheadertxt">
+                <b>Register</b>
             </div>
-        </section>
-    </header>
-
-    <!-- AOS -->
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+            <div class="basictxt">
+                Email:
+            </div>
+            <div>
+                <input type="email" class="inputbox" id="email" placeholder="email">
+            </div>
+            <div class="basictxt">
+                whatsapp:
+            </div>
+            <div>
+                <input type="tel" class="inputbox" id="whatsapp" placeholder="08xxxxxxxx">
+            </div>
+            <div class="basictxt">
+                Username:
+            </div>
+            <div>
+                <input type="text" class="inputbox" id="usernames" placeholder="username">
+            </div>
+            <div class="basictxt">
+                Password: (Nanti buat validasi password biar ga typo)
+            </div>
+            <div>
+                <input type="password" class="inputbox" id="passwords" placeholder="password">
+            </div>
+            <div>
+                <input type="pass2" class="inputbox" id="temppass" placeholder="Validate password">
+            </div>
+            <div class="Roles">
+                <p> Roles <i class="dropdown roles"></i></p>
+                <select>
+                    <option value="FTUI-STUDENTS">FTUI-STUDENTS</option>
+                    <option value="LECTURER">LECTURER</option>
+                    <option value="NON-FTUI STUDENTS">NON-FTUI STUDENTS</option>
+                </select>
+            </div>
+            <div class="basictxt">
+                Data Validation: (Habis di klik, data lain tidak dapat diganti)
+            </div>
+            <div>
+                <input type="button" class="button" id="validate" value="validate">
+            </div>
+            <div class="basictxt">
+                Code:
+            </div>
+            <div>
+                <input type="number" class="inputbox" id="code" placeholder="CHECK EMAIL">
+            </div>
+            <div>
+                <input type="button" class="button" id="submits" value="Register">
+            </div>
+            <div class="subbasictxt">
+                Already Have Account?
+                <a href="/login" class="link">Log In</a>
+            </div>
+        </div>
+    </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script>
-        AOS.init({
-            duration: 1000
+        jQuery(document).ready(function ($) {
+            var username, pass, email, whatsapp, stats, adm, role, code;
+            var disabled = $("#usernames").prop('disabled');
+            var disabled = $("#email").prop('disabled');
+            var disabled = $("#whatsapp").prop('disabled');
+            $('#validate').click(function () {
+                if (disabled) {
+                    $("#usernames").prop('disabled', false);
+                    $("#email").prop('disabled', false);
+                    $("#whatsapp").prop('disabled', false);        // if disabled, enable
+                }
+                else {
+                    $("#usernames").prop('disabled', true);        // if enabled, disable
+                    $("#email").prop('disabled', true); 
+                    $("#whatsapp").prop('disabled', true); 
+                }
+                username = $('#usernames').val();
+                email = $('#email').val();
+                whatsapp = $('#whatsapp').val();
+                $.post('/validation', { username: username, email: email, whatsapp: whatsapp }, function (data) {     
+                window.alert(data);
+                }); 
+            });
+
+            $('#submits').click(function () {
+                username = $('#usernames').val();
+                pass = $('#passwords').val();
+                pass2 = $('temppass').val();
+                email = $('#email').val();
+                whatsapp = $('#whatsapp').val();
+                role = $('#role').val();
+                code = $('#code').val();
+                if (pass === pass2){
+                    $.post('/register', { username: username, password: pass, email: email, whatsapp: whatsapp, role: role, verificationCode: code }, function (data) {
+                        if (data === 'done') {
+                            window.alert('Registration Success, Please Login');
+                            window.location.href = '/login';
+                        }   else {
+                            window.alert('Registration Failed: Duplicate Input');
+                        }
+                    });
+                }
+                else{
+                    window.alert("Password doesn't macth");
+                }
+
+                
+            });
         });
     </script>
-
-    <!-- Swiper JS -->
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script src="assets/js/main.js"></script>
 </body>
 
 </html>
