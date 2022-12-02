@@ -107,17 +107,15 @@
                     window.alert(data);
                 });
             });
+
             $('#submits').click(function () {
-                window.alert("CHECK YOUR EMAIL");
                 username = $('#usernames').val();
                 pass = $('#passwords').val();
                 email = $('#email').val();
                 whatsapp = $('#whatsapp').val();
-                stats = 'PENDING';
-                adm = '0';
                 role = $('#role').val();
                 code = $('#code').val();
-                $.post('/register', { username: username, password: pass, email: email, whatsapp: whatsapp, stats: stats, adm: adm, role: role, verificationCode: code }, function (data) {
+                $.post('/register', { username: username, password: pass, email: email, whatsapp: whatsapp, role: role, verificationCode: code }, function (data) {
                     if (data === 'done') {
                         window.alert('Registration Success, Please Login');
                         window.location.href = '/login';

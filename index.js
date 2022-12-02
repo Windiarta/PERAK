@@ -137,8 +137,8 @@ router.get('/order-resume', (req, res) => {
  * Usage: Check Room Availability
  */
 router.post('/check', (req, res) => {
-    if(temp){
-        room_id = req.body.roomId;
+    if (temp) {
+        room_id = req.body.room_id;
         check_start = req.body.start;
         check_duration = req.body.duration;
         check_end = check_start + check_duration;
@@ -245,12 +245,11 @@ router.post('/form', (req, res) => {
 router.post('/login', (req, res) =>{
     temp = req.session;
     temp.username = req.body.username;
-    temp.password = req.body.pass;
-    
+    temp.password = req.body.password;
     /**
      * Database Access : Collecting Login Information
      */
-    const query = `SELECT password FROM users WHERE username = '${temp.username}'`;
+    const query = `SELECT * FROM users WHERE username = '${temp.username}'`;
     db.query(query, (err, result)=>{
         if(err || !result.rows[0]){
             console.log('Username doesn\'t exist');
@@ -259,12 +258,15 @@ router.post('/login', (req, res) =>{
             /**
              * Checking Password
              */
-            bcrypt.compare(temp.password, result.rows[0].password, (err, result)=>{
-                if(err || !result){
+            bcrypt.compare(temp.password, result.rows[0].password, (err, ress)=>{
+                if (err) {
                     console.log('Incorrect password');
                     res.end('fail2')
-                } 
-                res.end('done');
+                } else {
+                    temp.user_id = result.rows[0].user_id; 
+                    temp.stats = result.rows[0].stats;
+                    res.end('done');
+                }
             });
         }
     });
@@ -367,7 +369,7 @@ router.post('/register', (req, res)=>{
             stats = 'PENDING';    //default PENDING
             adm = 0;       //default 0
             role = req.body.role;
-            const query = `INSERT INTO users VALUES ((SELECT max(user_id) FROM users) + 1, '${usr}', '${hash}', '${email}', '${whatsapp}', '${stats}', '${adm}', '${role}');`;
+            const query = `INSERT INTO users VALUES ((SELECT count(user_id) + 1 FROM users), '${usr}', '${hash}', '${email}', '${whatsapp}', '${stats}', '${adm}', '${role}');`;
 
             db.query(query, (err, result)=>{
                 if(err){
@@ -387,6 +389,142 @@ router.post('/register', (req, res)=>{
         //res.redirect('/register');
     }
 })
+
+/**
+ * Router get_admin
+ * Usage: Make the user be an admin
+ */
+router.post("/get_admin", (req, res) => {
+    temp = req.session;
+    const query = `UPDATE users SET admin = true WHERE user_id = ${temp.user_id};`;
+    db.query(query, (err, result) => {
+        if (err) {
+            res.end("Unable to access database");
+        } else {
+            console.log("Now, You are admin");
+            res.end("Now, You are admin");
+        }
+    })
+})
+
+/** 
+ * Router update_status
+ * Method: Post
+ * Param: req.body.accept
+ * Usage: update user status
+ */
+router.post('/update_status', (req, res) => {
+    temp = req.session;
+    const query = `SELECT admin FROM users WHERE user_id = '${temp.user_id}';`;
+    db.query(query, (err, result) => {
+        if (err) {
+            console.log('Something Error');
+            res.end('Something Error');
+        }
+        if (result.rows[0].admin) {
+            if (req.body.accept == 1) {
+                stats = "ACTIVE";
+            } else if (req.body.accept == 0) {
+                stats = "REJECTED";
+            }
+            const query = `UPDATE users SET status = '${stats}' WHERE user_id = ${temp.user_id};`;
+            db.query(query, (err, result) => {
+                if (err) {
+                    console.log("Something error");
+                    res.end("Unable to connect database");
+                } else {
+                    res.end("Account Status Updated")
+                }
+            })
+        } else {
+            console.log("default user try to access admin pages");
+            res.end("admin: failed");
+            res.render("Homepage");
+        }
+    });
+});
+
+
+/** 
+ * Router add_room
+ * Method: Post
+ * Usage: add room to database
+ */
+router.post('/add_room', (req, res) => {
+    temp = req.session;
+    const query = `SELECT admin FROM users WHERE user_id = '${temp.user_id}';`;
+    db.query(query, (err, result) => {
+        if (err) {
+            console.log('Something Error');
+            res.end('Something Error');
+        }
+        if (result.rows[0].admin) {
+            //code here
+            res.end("admin: success");
+
+
+
+        } else {
+            console.log("default user try to access admin pages");
+            res.end("admin: failed");
+            res.render("Homepage");
+        }
+    });
+});
+
+/** 
+ * Router remove_room
+ * Method: Post
+ * Usage: remove room to database
+ */
+router.post('/remove_room', (req, res) => {
+    temp = req.session;
+    const query = `SELECT admin FROM users WHERE user_id = '${temp.user_id}';`;
+    db.query(query, (err, result) => {
+        if (err) {
+            console.log('Something Error');
+            res.end('Something Error');
+        }
+        if (result.rows[0].admin) {
+            //code here
+            res.end("admin: success");
+
+
+
+        } else {
+            console.log("default user try to access admin pages");
+            res.end("admin: failed");
+            res.render("Homepage");
+        }
+    });
+});
+
+/** 
+ * Router edit_room
+ * Method: Post
+ * Usage: edit room to database
+ */
+router.post('/edit_room', (req, res) => {
+    temp = req.session;
+    const query = `SELECT admin FROM users WHERE user_id = '${temp.user_id}';`;
+    db.query(query, (err, result) => {
+        if (err) {
+            console.log('Something Error');
+            res.end('Something Error');
+        }
+        if (result.rows[0].admin) {
+            //code here
+            res.end("admin: success");
+
+
+
+        } else {
+            console.log("default user try to access admin pages");
+            res.end("admin: failed");
+            res.render("Homepage");
+        }
+    });
+});
 
 
 //Router 32: Menghapus Session (logout)
