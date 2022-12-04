@@ -93,6 +93,10 @@ router.get('/', (req, res) => {
     }
 });
 
+router.get('/details', (req, res)=>{
+    res.render('DetailsPage');
+})
+
 router.get('/rent', (req, res)=> {
     res.render('RentPage');
 })
