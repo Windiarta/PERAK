@@ -1,3 +1,12 @@
+/**
+ * PERAK FTUI
+ * @author Windiarta
+ * @author M. Darrel Tristan
+ * 
+ * @version 0.1
+ * 
+ */
+
 //Import packages
 const express = require('express');
 const session = require('express-session');
@@ -302,7 +311,7 @@ router.post('/validation', (req, res)=>{
                 res.end('Duplicate Username');
             } else {
                 db.query(query1, (err1, result1)=>{
-                    if(err){
+                    if(err1){
                         console.log('Gagal Akses Database');
                         res.end('Verification 1 Failed in Accessing Database');
                     } else if (result[0]){
@@ -310,7 +319,7 @@ router.post('/validation', (req, res)=>{
                         res.end('Duplicate email');
                     } else {
                         db.query(query2, (err2, result2)=>{
-                            if(err){
+                            if(err2){
                                 console.log('Gagal Akses Database');
                                 res.end('Verification 2 Failed in Accessing Database');
                             } else if (result[0]){
