@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
+    "\\public",
+    "\\public\\css",
     "\\views"
   ],
-  "SelectedNode": "\\views\\DetailsPage.ejs",
+  "SelectedNode": "\\public\\css\\Style.css",
   "PreviewInSolutionExplorer": false
 }

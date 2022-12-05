@@ -104,19 +104,34 @@ router.get('/', (req, res) => {
 
 router.get('/details', (req, res)=>{
     res.render('DetailsPage');
+    /*
+    if (req.session.username) {
+        res.render('DetailsPage');
+    } else {
+        res.redirect('/');
+        //res.redirect("/err403page");
+    }
+    */
 })
 
-router.get('/rent', (req, res)=> {
+//nanti ganti jadi facility aja routenya
+router.get('/rent', (req, res) => {
     res.render('RentPage');
+    /*
+    if (req.session.username) {
+        res.render('RentPage');
+    } else {
+        res.redirect('/');
+        //res.redirect("/err403page");
+    }
+    */
 })
 
 router.get('/login', (req, res) => {
-    //res.send('Login');
     res.render('Login');
 })
 
 router.get('/register', (req, res) => {
-    //res.send('Register');
     res.render('register');
 })
 
@@ -124,24 +139,30 @@ router.get('/home', (req, res) => {
     res.render('Mainpage');
 })
 
-router.get('/facilities', (req, res) => {
-    res.send('Facilities');
-    //res.render('FacilitiesPage');
-})
-
-router.get('/schedule', (req, res) => {
-    res.send('Schedule');
-    //res.render('Schedule');
-})
-
 router.get('/order-details', (req, res) => {
     res.send('OrderDetails');
     //res.render('OrderDetailsPage');
+    /*
+    if (req.session.username) {
+        res.render('OrderDetailsPage');
+    } else {
+        res.redirect('/');
+        //res.redirect("/err403page");
+    }
+    */
 })
 
 router.get('/order-resume', (req, res) => {
     res.send('OrderResume');
-    //res.render('ResumePage')
+    //res.render('ResumePage');
+    /*
+    if (req.session.username) {
+        res.render('ResumePage');
+    } else {
+        res.redirect('/');
+        //res.redirect("/err403page");
+    }
+    */
 })
 
 /**
@@ -224,18 +245,27 @@ router.post('/form', (req, res) => {
     temp.username = req.body.username;
     temp.password = req.body.pass;
 
-    
-    //facility = ("Object", amount), ("Object2", amount);
-    const query = `INSERT INTO forms VALUES (SELECT count(form_id) FROM forms)+1, ${room_id}, '${activity_name}', ${attendance}, '${letter}', ARRAY[${facility}], ${consumption};`;
-    db.query(query, (err, res) => {
-        if(err){
-            res.end("ERROR");
+    room_id = req.body.room_id;
+    activity_name = req.body.activity;
+    attendance = req.body.attendance;
+    facility = req.body.facility;
+    letter = req.body.letter;
+    consumption = req.body.consumption;
+    book_date = req.body.date;
+    book_start = req.body.start;
+    book_duration = req.body.duration;
+
+    const query = `INSERT INTO forms VALUES ((SELECT count(form_id)+1 FROM forms), ${room_id}, '${activity_name}', ${attendance}, '${letter}', '${facility}', ${consumption});`;
+    db.query(query, (err, res1) => {
+        if (err) {
+            console.log(query);
+            res.end("ERROR1");
         }
         else {
             res.send("Form Successfully Registered");
             //generating booking details
             const query1 = `INSERT INTO books VALUES (SELECT count(book_id) FROM books)+1, SELECT user_id WHERE username = ${temp.username}, SELECT count(form_id) FROM forms, current_timestamp, ${book_date}, ${book_start}, ${book_duration};`
-            db.query(query, (err1, res1) => {
+            db.query(query1, (err1, res2) => {
                 if(err1){
                     res.end("ERROR");
                 }
@@ -575,7 +605,11 @@ router.post('/edit_facility', (req, res) => {
 });
 
 
-//Router 32: Menghapus Session (logout)
+/** 
+ * Router logout
+ * Method: Get
+ * Usage: end session
+ */
 router.get('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {
@@ -584,6 +618,16 @@ router.get('/logout', (req, res) => {
         res.redirect('/');
     });
 });
+
+/** 
+ * Router default route
+ * Method: get
+ * Usage: redirect all route to home
+ */
+router.get('*', (req, res) => {
+    res.redirect('/');
+    //res.redirect('err404page');
+})
 
 app.use('/', router);
 app.listen(process.env.PORT || 5230, () => {
