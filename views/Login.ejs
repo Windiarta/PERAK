@@ -72,7 +72,7 @@
                 username = $('#usernamelogin').val();
                 pass = $('#passwordlogin').val();
                     
-                $.post('/login', { username: username, pass: pass }, function(data) {
+                $.post('/login', { username: username, password: pass }, function(data) {
                     if (data === 'done') {
                         window.location.href = '/home';
                         window.alert('Login Sukses');
