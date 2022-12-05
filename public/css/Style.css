@@ -3,7 +3,7 @@
 :root{
     --main-color : #ffffff;
     --second-color : #FFA451;
-    --body-color : black;
+    --body-color : rgb(57, 52, 52);
 
     --main-font: 'Open Sans', sans-serif;
     --heading-font : 'Raleway', sans-serif;
@@ -1060,7 +1060,7 @@ body {
   }
   
   .buy-button {
-    background-color: #f9ca24;
+    background-color: var(--second-color);
     border: none;
     padding: 1em;
     border-radius: 5px;
@@ -1137,7 +1137,7 @@ body {
   }
   
   .text,
-  
+
   .title {
     opacitiy: 1;
     transition: 0.5s ease;
