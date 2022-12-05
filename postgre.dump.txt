@@ -31,16 +31,11 @@ book_date date NOT NULL,
 book_time_start integer NOT NULL,
 book_duration integer NOT NULL);
 
-
-CREATE TYPE facilities AS (
-name text,
-amount integer);
-
 CREATE TABLE forms (
 form_id serial PRIMARY KEY,
 room_id integer NOT NULL,
 activity_name text NOT NULL,
 attendance integer NOT NULL,
 letter text,
-facility facilities[],
+facilities text,
 consumption bool NOT NULL);
