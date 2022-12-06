@@ -1139,7 +1139,7 @@ body {
   .text,
 
   .title {
-    opacitiy: 1;
+    opacity: 1;
     transition: 0.5s ease;
   }
   
@@ -1238,10 +1238,7 @@ body {
 	top: 0;
 	left: 0;
 }
-.picZoomer-pic{
-	/*width: 100%;
-	height: 100%;*/
-}
+
 .picZoomer-zoom-wp{
 	display: none;
 	position: absolute;
