@@ -12,7 +12,7 @@ status stat NOT NULL,
 admin bool NOT NULL,
 role roles NOT NULL);
 
-CREATE TYPE avai AS ENUM ('AVAILABLE', 'MAINTAINANCE');
+CREATE TYPE avai AS ENUM ('AVAILABLE', 'MAINTENANCE', 'NOT AVAILABLE');
 CREATE TABLE rooms (
 room_id serial PRIMARY KEY,
 room_name text UNIQUE NOT NULL,
