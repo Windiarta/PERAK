@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm install && npm run build",
+    "build": "build.toml",
     "start": "nodemon index.js"
   },
   "repository": {
