@@ -71,7 +71,7 @@
             </div>
             <div class="Roles">
                 <p> Roles <i class="dropdown roles"></i></p>
-                <select>
+                <select id="role">
                     <option value="FTUI-STUDENTS">FTUI-STUDENTS</option>
                     <option value="LECTURER">LECTURER</option>
                     <option value="NON-FTUI STUDENTS">NON-FTUI STUDENTS</option>
@@ -127,7 +127,7 @@
             $('#submits').click(function () {
                 username = $('#usernames').val();
                 pass = $('#passwords').val();
-                pass2 = $('temppass').val();
+                pass2 = $('#temppass').val();
                 email = $('#email').val();
                 whatsapp = $('#whatsapp').val();
                 role = $('#role').val();
@@ -138,7 +138,7 @@
                             window.alert('Registration Success, Please Login');
                             window.location.href = '/login';
                         }   else {
-                            window.alert('Registration Failed: Duplicate Input');
+                            window.alert('Registration Failed: Something Error');
                         }
                     });
                 }
