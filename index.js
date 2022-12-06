@@ -48,8 +48,6 @@ const transport = nodemailer.createTransport({
 });
 
 
-
-
 //Insiasi koneksi ke database
 const db = new Client({
     user: config.dbuser,
@@ -144,7 +142,7 @@ router.get('/home', (req, res) => {
 })
 
 router.get('/order-details', (req, res) => {
-    res.send('OrderDetails');
+    res.render('OrderDetails');
     //res.render('OrderDetailsPage');
     /*
     if (req.session.username) {
