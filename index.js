@@ -167,6 +167,20 @@ router.get('/order-resume', (req, res) => {
     */
 })
 
+router.post('/getroom', (req, res) => {
+    const query = `SELECT * FROM rooms;`;
+    db.query(query, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.end('Something Error');
+        } else {
+            res.send(result.rows);
+            data = result.rows;
+        }
+    });
+})
+
+
 /**
  * Router RoomCheck
  * Method Post
