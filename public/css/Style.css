@@ -7,6 +7,7 @@
 
     --main-font: 'Open Sans', sans-serif;
     --heading-font : 'Raleway', sans-serif;
+    --body-font : 'Raleway Light', sans-serif;
 
 }
 
@@ -1558,3 +1559,11 @@ section {
     color: #fd7f34;
 }
 
+.order-table{
+    border: 1px solid black;
+    color: white;
+    font-family: var(--main-font);
+    font-weight: 100;
+    width: 1500px;
+    padding: 5%;
+}
