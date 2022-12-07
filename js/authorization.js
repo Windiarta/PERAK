@@ -21,13 +21,17 @@ var auth = {
                  */
                 bcrypt.compare(temp.password, result.rows[0].password, (err, ress) => {
                     if (err) {
-                        console.log('Incorrect password');
-                        res.end('fail2')
+                        console.log(err);
                     } else {
-                        temp.user_id = result.rows[0].user_id;
-                        temp.stats = result.rows[0].stats;
-                        res.end('done');
+                        if (ress) {
+                            temp.user_id = result.rows[0].user_id;
+                            temp.stats = result.rows[0].stats;
+                            res.end('done');
+                        } else if (!ress) {
+                            res.end('fail2');
+                        }
                     }
+                    
                 });
             }
         });

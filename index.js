@@ -190,14 +190,18 @@ router.post('/check', (req, res) => {
     order.check(req, db, res);
 })
 
+router.post('/timecheck', (req, res) => {
+    order.timecheck(req, db, res);
+})
+
 /**
  * Router Form
  * Method Post
  * Usage: Create Form
  */
 router.post('/form', (req, res) => {
-    order.form(req, db, res, temp);
-
+    temp = req.session;
+    order.form(req, db, res, temp.username);
 })
 
 

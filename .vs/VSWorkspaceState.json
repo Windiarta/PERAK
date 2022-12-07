@@ -1,7 +1,12 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\js",
+    "\\public",
+    "\\public\\css",
+    "\\public\\scss",
+    "\\views"
   ],
-  "SelectedNode": "\\package.json",
+  "SelectedNode": "\\views\\Login.ejs",
   "PreviewInSolutionExplorer": false
 }

@@ -41,6 +41,7 @@
             <form action="datepicker">
                 <label for="datepick">Pick Date of Rent:</label>
                 <input type="date" id="datepick" name="datepick">
+                <input type="button" id="checktime" value="Check"/>
             </form>
             <div class="timepick">
                 <label for="timepick">Pick Time of Rent:</label>
@@ -60,7 +61,7 @@
             </div>
             <div class="letter">
                 <label for="letter">Activity Letter</label>
-                <input type="text" id="activityname" placeholder="input URL">
+                <input type="text" id="letter" placeholder="input URL">
             </div>
             <div class="facilities">
                 <label for="facilities">How many people will use the facility?</label>
@@ -68,7 +69,7 @@
             </div>
             <div class="consumption">
                 <label for="consumption">Consumption</label>
-                <input type="text" id="consumption" placeholder="input URL">
+                <input type="checkbox" id="consumption" placeholder="input URL">
             </div>
             <div>
                 <input type="button" id="submitrent" value="Submit">
@@ -82,6 +83,20 @@
                 var code = query.split("=");
                 var room = code[1];
                 var datepick, timepick, endtime, activityname, attendance, letter, facilities, consumption;
+                $('#checktime').click(function () {
+                    datepick = $('#datepick').val().toString();
+                    $.post('/timecheck', { room_id: room, date: datepick }, function (data) {
+                        console.log(data);
+                        //DATA isinya adalah 24 karakter atau MAINTENANCE dengan ketentuan sbb:
+                        //0 = Available
+                        //1 = Unavailable
+                        //
+                        //Bit ke N menunjukan jam ke N (contoh 001 -> jam 0 sama jam 1 kosong, jam 2 ada yang pakai)
+                        //
+                        //MAINTENANCE = Ruangan tidak dapat digunakan
+                    });
+                })
+                
                 $('#submitrent').click(function () {
                     datepick = $('#datepick').val().toString();
                     timepick = $('#timepick').val();
@@ -91,10 +106,29 @@
                     letter = $('#letter').val();
                     facilities = $('#facilities').val();
                     consumption = $('#consumption').val();
-                    console.log(datepick);
                     $.post('/check', { room_id: room, start: timepick, end: endtime, date: datepick }, function (data) {
-                        window.alert(data);
-                    })
+                        console.log(data);
+                        if (data == 'MAINENANCE') {
+                            window.alert("Facility is under Maintenance");
+                        } else if (data == 'NA') {
+                            window.alert("Facility is Not Available");
+                        } else if (data == 'AVAILABLE') {
+                            console.log("Available, redirecting to /form");
+                            con = false;
+                            if (consumption === 'on') {
+                                con = true;
+                            }
+                            $.post('/form', {
+                                room_id: room, activity: activityname, attendance: attendance, facility: facilities, letter: letter, consumption: con, date: datepick, start: timepick, end: endtime
+                            }, function (data1) {
+                                console.log(data1);
+                            });
+                        } else {
+                            window.alert("Something wrong in /check data");
+                        }
+                    });
+                    
+                    
                 });
             });
         </script>
