@@ -172,26 +172,20 @@ var admin = {
                 console.log('Something Error');
                 res.end('Something Error');
             } else {
+                var acc = 'PENDING';
                 if (req.body.accept == false) {
-                    const query = `UPDATE INTO books SET stats = 'ACCEPTED';`;
-                    db.query(query, (err1, res1) => {
-                        if (err1) {
-                            console.log("Something error");
-                        } else {
-                            res.end("ACCEPT");
-                        }
-                    });
-                } if (req.body.accept == true) {
-                    const query = `UPDATE INTO books SET stats = 'REJECTED';`;
-                    db.query(query, (err1, res1) => {
-                        if (err1) {
-                            console.log("Something error");
-                        } else {
-                            res.end("REJECT");
-                        }
-                    });
+                    acc = 'REJECTED';
+                } else if (req.body.accept == true) {
+                    acc = 'ACCEPTED';
                 }
-                
+                const query = `UPDATE INTO books SET stats = '${acc}';`;
+                db.query(query, (err1, res1) => {
+                    if (err1) {
+                        console.log("Something error");
+                    } else {
+                        res.end(acc);
+                    }
+                });
             }
         });
     },

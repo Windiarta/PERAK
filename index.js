@@ -37,7 +37,6 @@ module.exports = {
     pass: pass
 };
 
-
 const transport = nodemailer.createTransport({
     service: "Gmail",
     port:465,
@@ -47,8 +46,6 @@ const transport = nodemailer.createTransport({
     },
 });
 
-
-//Insiasi koneksi ke database
 const db = new Client({
     user: config.dbuser,
     host: config.dbserver,
@@ -60,7 +57,6 @@ const db = new Client({
 
 });
 
-//Melakukan koneksi dan menunjukkan indikasi database terhubung
 db.connect((err)=>{
     if(err){
         console.log(err)
@@ -91,19 +87,21 @@ app.use('/img', express.static(__dirname + 'public/images'))
 app.set('views', './views');
 app.set('view engine', 'ejs');
 
+var temp;
+
 //ROUTERS GET
 //Router 1: Menampilkan landing page (ada opsi login/register)
 router.get('/', (req, res) => {
     temp = req.session;
     if (temp.username) { 
-        res.render('Mainpage');
+        res.redirect('/home');
     } else {
-        res.render('Login');
+        res.redirect('/login');
     }
 });
 
 router.get('/details', (req, res)=>{
-    if (req.session.username) {
+    if (temp.username) {
         res.render('DetailsPage');
     } else {
         res.redirect('/home');
@@ -112,7 +110,7 @@ router.get('/details', (req, res)=>{
 
 //nanti ganti jadi facility aja routenya
 router.get('/rent', (req, res) => {
-    if (req.session.username) {
+    if (temp.username) {
         res.render('RentPage');
     } else {
         res.redirect('/home');
@@ -132,16 +130,11 @@ router.get('/home', (req, res) => {
 })
 
 router.get('/order-details', (req, res) => {
-    res.render('OrderDetails');
-    //res.render('OrderDetailsPage');
-    /*
-    if (req.session.username) {
+    if (temp.username) {
         res.render('OrderDetailsPage');
     } else {
-        res.redirect('/');
-        //res.redirect("/err403page");
+        res.redirect('/home');
     }
-    */
 })
 
 router.get('/order-resume', (req, res) => {
@@ -158,20 +151,11 @@ router.get('/order-resume', (req, res) => {
 })
 
 router.post('/getroom', (req, res) => {
-    const query = `SELECT * FROM rooms;`;
-    db.query(query, (err, result) => {
-        if (err) {
-            console.log(err);
-            res.end('Something Error');
-        } else {
-            res.send(result.rows);
-            data = result.rows;
-        }
-    });
+    order.getroom(req, db, res);
 })
 
 router.post('/check', (req, res) => {
-    order.check(req, db, res);
+    order.check(req, db, res, temp);
 })
 
 router.post('/timecheck', (req, res) => {
@@ -184,7 +168,7 @@ router.post('/form', (req, res) => {
 })
 
 router.post('/login', (req, res) =>{
-    auth.login(req, db, res);
+    temp = auth.login(req, db, res);
 });
 
 router.post('/validation', (req, res) => {

@@ -1,47 +1,56 @@
 var order = {
-    check: function (req, db, res) {
-        room_id = req.body.room_id;
-        check_start = req.body.start;
-        check_end = req.body.end;
-        check_duration = check_end - check_start;
-        book_date = req.body.date;
-        flag = 0;
-        const query = `select rooms.availability as avai, books.book_time_start as start, books.book_duration as duration from books, rooms where (books.book_date = '${book_date}' and rooms.room_id = ${room_id});`;
-        db.query(query, (err, result) => {
-            console.log(query);
-            if (err) {
-                console.log('Couldn\'t connect to database: from /check');
-                res.end('Couldn\'t connect to database: from /check');
-            } else {
-                var i = 0;
-                if (result.rows[0].avai === 'AVAILABLE') {
-                    while (i < result.rows.length) {
-                        book_start = result.rows[i].start;
-                        duration = result.rows[i].duration;
-                        book_end = book_start + duration;
-                        if (check_start > book_start && check_start < book_end) {
-                            console.log("Start before others end");
-                            flag = 1;
-                            break;
-                        }
-                        if (check_end > book_start && check_end < book_end) {
-                            console.log("End before others start");
-                            flag = 1;
-                            break;
-                        }
-                        i += 1;
-                    }
-                    if (flag == 1) {
-                        res.end('NA');
-                    } else {
-                        res.end('AVAILABLE');
-                    }
+    check: function (req, db, res, temp) {
+        console.log(temp.username);
+        console.log(temp.stats);
+        if (temp.stats != 'ACCEPTED') {
+            res.end('Tidak Dapat Membuat Pesanan: Akun Belum Aktif, Silahkan Hubungi Admin');
+        } else {
+            room_id = req.body.room_id;
+            check_start = req.body.start;
+            check_end = req.body.end;
+            check_duration = check_end - check_start;
+            book_date = req.body.date;
+            flag = 0;
+            //ada error: query gamau return yang diminta untuk ruangan dengan id tertentu
+            const query = `SELECT availability AS avai FROM rooms WHERE room_id = ${room_id};`;
+            const query = `SELECT rooms.availability AS avai, books.book_time_start AS start, books.book_duration AS duration FROM books, rooms WHERE (books.book_date = '${book_date}' and rooms.room_id = ${room_id});`;
+            db.query(query, (err, result) => {
+                console.log(query);
+                if (err) {
+                    console.log('Couldn\'t connect to database: from /check');
+                    res.end('Couldn\'t connect to database: from /check');
                 } else {
-                    res.end('MAINTENANCE');
-                }
+                    var i = 0;
+                    if (result.rows[0].avai === 'AVAILABLE') {
+                        while (i < result.rows.length) {
+                            book_start = result.rows[i].start;
+                            duration = result.rows[i].duration;
+                            book_end = book_start + duration;
+                            if (check_start > book_start && check_start < book_end) {
+                                console.log("Start before others end");
+                                flag = 1;
+                                break;
+                            }
+                            if (check_end > book_start && check_end < book_end) {
+                                console.log("End before others start");
+                                flag = 1;
+                                break;
+                            }
+                            i += 1;
+                        }
+                        if (flag == 1) {
+                            res.end('NA');
+                        } else {
+                            res.end('AVAILABLE');
+                        }
+                    } else {
+                        res.end('MAINTENANCE');
+                    }
                 
-            }
-        });
+                }
+            });
+        }
+        
     },
 
     timecheck: function (req, db, res) {
@@ -120,7 +129,20 @@ var order = {
                 })
             }
         })
-    }
+    },
+
+    getroom: function (req, db, res) {
+        const query = `SELECT * FROM rooms;`;
+        db.query(query, (err, result) => {
+            if (err) {
+                console.log(err);
+                res.end('Something Error');
+            } else {
+                res.send(result.rows);
+            }
+        });
+    },
+    
 }
 
 module.exports = order;
