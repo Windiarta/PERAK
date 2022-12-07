@@ -67,7 +67,7 @@
                 <input type="password" class="inputbox" id="passwords" placeholder="password">
             </div>
             <div>
-                <input type="pass2" class="inputbox" id="temppass" placeholder="Validate password">
+                <input type="password" class="inputbox" id="temppass" placeholder="Validate password">
             </div>
             <div class="Roles">
                 <p> Roles <i class="dropdown roles"></i></p>
@@ -137,7 +137,9 @@
                         if (data === 'done') {
                             window.alert('Registration Success, Please Login');
                             window.location.href = '/login';
-                        }   else {
+                        } else if (data === 'Verification failed'){
+                            window.alert('Registration Failed: Wrong Verification');
+                        } else {
                             window.alert('Registration Failed: Something Error');
                         }
                     });

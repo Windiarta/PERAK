@@ -56,7 +56,7 @@ var auth = {
                 adm = false;       //default 0
                 role = req.body.role;
                 const query = `INSERT INTO users VALUES ((SELECT count(user_id) + 1 FROM users), '${usr}', '${hash}', '${email}', '${whatsapp}', '${stats}', '${adm}', '${role}');`;
-
+                console.log(query);
                 db.query(query, (err, result) => {
                     if (err) {
                         console.log('Gagal Registrasi');
