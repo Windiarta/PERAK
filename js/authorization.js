@@ -42,7 +42,8 @@ var auth = {
         /**
          * Password hashing
          */
-        if (req.body.verificationCode == confirmationCode) {
+        const code = confirmationCode;
+        if (req.body.verificationCode == code) {
             bcrypt.hash(req.body.password, 10, (err, hash) => {
                 if (err) {
                     return res.status(500).json({
@@ -69,13 +70,13 @@ var auth = {
             })
         } else {
             console.log('Verification Failed');
-            console.log('code generated: ', confirmationCode);
+            console.log('code generated: ', code);
             console.log('code input: ', req.body.verificationCode);
             res.end('Verification failed');
         }
     },
 
-    validate: function (req, db, res, user, pass, transport) {
+    validate: function (req, db, res, transport) {
         if (ValidateEmail(req.body.email)) {
             temp = req.session;
             temp.username = req.body.username;

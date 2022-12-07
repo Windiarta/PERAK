@@ -95,38 +95,28 @@ app.set('view engine', 'ejs');
 //Router 1: Menampilkan landing page (ada opsi login/register)
 router.get('/', (req, res) => {
     temp = req.session;
-    if (temp.username) { //jika user terdaftar maka akan masuk ke halaman utama
-        //res.send('Mainpage');
+    if (temp.username) { 
         res.render('Mainpage');
-    } else { //login / register page 
-        //res.send('Home');
+    } else {
         res.render('Login');
     }
 });
 
 router.get('/details', (req, res)=>{
-    res.render('DetailsPage');
-    /*
     if (req.session.username) {
         res.render('DetailsPage');
     } else {
-        res.redirect('/');
-        //res.redirect("/err403page");
+        res.redirect('/home');
     }
-    */
 })
 
 //nanti ganti jadi facility aja routenya
 router.get('/rent', (req, res) => {
-    res.render('RentPage');
-    /*
     if (req.session.username) {
         res.render('RentPage');
     } else {
-        res.redirect('/');
-        //res.redirect("/err403page");
+        res.redirect('/home');
     }
-    */
 })
 
 router.get('/login', (req, res) => {
@@ -180,12 +170,6 @@ router.post('/getroom', (req, res) => {
     });
 })
 
-
-/**
- * Router RoomCheck
- * Method Post
- * Usage: Check Room Availability
- */
 router.post('/check', (req, res) => {
     order.check(req, db, res);
 })
@@ -194,50 +178,23 @@ router.post('/timecheck', (req, res) => {
     order.timecheck(req, db, res);
 })
 
-/**
- * Router Form
- * Method Post
- * Usage: Create Form
- */
 router.post('/form', (req, res) => {
     temp = req.session;
     order.form(req, db, res, temp.username);
 })
 
-
-/**
- * Router Login
- * Method: Post
- * Usage: Check username & password
- *        Creat login session
- */
 router.post('/login', (req, res) =>{
     auth.login(req, db, res);
 });
 
-/**
- * Router Validation
- * Method: Post
- * Usage: Validate user using (EMAIL/PHONE NUMBER)
- */
 router.post('/validation', (req, res) => {
-    auth.validate(req, db, res, user, pass, transport);
+    auth.validate(req, db, res, transport);
 });
 
-/**
- * Router Register
- * Method: Post
- * Usage: Create email verification
- *        Export new user to database
- */
 router.post('/register', (req, res) => {
     auth.register(req, db, res);
 })
 
-/**
- * Router get_admin
- * Usage: Make the user be an admin
- */
 router.post("/get_admin", (req, res) => {
     admin.get_adm(req, db, res);
 })
@@ -250,51 +207,22 @@ router.post('/acc_order', (req, res) => {
     admin.acc_order(req, db, res);
 })
 
-/** 
- * Router update_status
- * Method: Post
- * Param: req.body.accept
- * Usage: update user status
- */
 router.post('/update_status', (req, res) => {
     admin.update_stat(req, db, res);
 });
 
-
-/** 
- * Router add_facilities
- * Method: Post
- * Usage: add facilities to database
- * Next Update: operational hours
- */
 router.post('/add_facility', (req, res) => {
     admin.add_fac(req, db, res);
 });
 
-/** 
- * Router remove_facility
- * Method: Post
- * Usage: remove facility to database
- */
 router.post('/remove_facility', (req, res) => {
     admin.rm_fac(req, db, res);
 });
 
-/** 
- * Router edit_facility
- * Method: Post
- * Usage: edit facility to database
- */
 router.post('/edit_facility', (req, res) => {
     admin.edit_fac(req, db, res);
 });
 
-
-/** 
- * Router logout
- * Method: Get
- * Usage: end session
- */
 router.get('/logout', (req, res) => {
     auth.logout(req, res);
 });
@@ -305,7 +233,7 @@ router.get('/logout', (req, res) => {
  * Usage: redirect all route to home
  */
 router.get('*', (req, res) => {
-    res.redirect('/');
+    res.redirect('/home');
     //res.redirect('err404page');
 })
 
