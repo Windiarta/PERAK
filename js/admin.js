@@ -141,7 +141,60 @@ var admin = {
                 res.render("Homepage");
             }
         });
-    }
+    },
+
+    get_order: function (req, db, res) {
+        temp = req.session;
+        const query = `SELECT admin FROM users WHERE user_id = '${temp.user_id}';`;
+        db.query(query, (err, result) => {
+            if (err) {
+                console.log('Something Error');
+                res.end('Something Error');
+            } else {
+                const query = `SELECT * FROM books NATURAL JOIN forms`;
+                db.query(query, (err1, res1) => {
+                    if (err1) {
+                        console.log("Something error");
+                    } else {
+                        console.log(res1.rows);
+                        res.send(res1.rows);
+                    }
+                });
+            }
+        });
+    },
+
+    acc_order: function (req, db, res) {
+        temp = req.session;
+        const query = `SELECT admin FROM users WHERE user_id = '${temp.user_id}';`;
+        db.query(query, (err, result) => {
+            if (err) {
+                console.log('Something Error');
+                res.end('Something Error');
+            } else {
+                if (req.body.accept == false) {
+                    const query = `UPDATE INTO books SET stats = 'ACCEPTED';`;
+                    db.query(query, (err1, res1) => {
+                        if (err1) {
+                            console.log("Something error");
+                        } else {
+                            res.end("ACCEPT");
+                        }
+                    });
+                } if (req.body.accept == true) {
+                    const query = `UPDATE INTO books SET stats = 'REJECTED';`;
+                    db.query(query, (err1, res1) => {
+                        if (err1) {
+                            console.log("Something error");
+                        } else {
+                            res.end("REJECT");
+                        }
+                    });
+                }
+                
+            }
+        });
+    },
 }
 
 module.exports = admin;

@@ -242,6 +242,14 @@ router.post("/get_admin", (req, res) => {
     admin.get_adm(req, db, res);
 })
 
+router.post("/get_order", (req, res) => {
+    admin.get_order(req, db, res);
+})
+
+router.post('/acc_order', (req, res) => {
+    admin.acc_order(req, db, res);
+})
+
 /** 
  * Router update_status
  * Method: Post
