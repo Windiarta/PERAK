@@ -83,7 +83,6 @@ var order = {
                 } else {
                     var i = 0;
                     if (result.rows[0].avai === 'AVAILABLE') {
-
                         while (i < result.rows.length) {
                             book_start = result.rows[i].start;
                             duration = result.rows[i].duration;
