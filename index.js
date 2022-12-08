@@ -110,11 +110,12 @@ router.get('/details', (req, res)=>{
 
 //nanti ganti jadi facility aja routenya
 router.get('/rent', (req, res) => {
-    if (temp.username) {
+    res.render('RentPage');
+   /* if (temp.username) {
         res.render('RentPage');
     } else {
         res.redirect('/home');
-    }
+    }*/
 })
 
 router.get('/login', (req, res) => {
@@ -127,6 +128,10 @@ router.get('/register', (req, res) => {
 
 router.get('/home', (req, res) => {
     res.render('Mainpage');
+})
+
+router.get('/aboutus', (req, res) => {
+    res.render('AboutUs');
 })
 
 router.get('/order-details', (req, res) => { 
