@@ -125,6 +125,10 @@ router.get('/register', (req, res) => {
     res.render('register');
 })
 
+router.get('/aboutus', (req, res) => {
+    res.render('AboutUs');
+})
+
 router.get('/home', (req, res) => {
     res.render('Mainpage');
 })
