@@ -27,7 +27,6 @@ var auth = {
                             temp.stats = result.rows[0].status;
                             console.log(temp.stats);
                             temp.username = req.body.username;
-                            temp.password = req.body.password;
                             res.send('done');
                         }
                     }

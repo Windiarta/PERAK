@@ -12,8 +12,7 @@ var order = {
             book_date = req.body.date;
             flag = 0;
             //ada error: query gamau return yang diminta untuk ruangan dengan id tertentu
-            const query = `SELECT availability AS avai FROM rooms WHERE room_id = ${room_id};`;
-            const query = `SELECT rooms.availability AS avai, books.book_time_start AS start, books.book_duration AS duration FROM books, rooms WHERE (books.book_date = '${book_date}' and rooms.room_id = ${room_id});`;
+            const query = `SELECT rooms.availability AS avai, books.book_time_start AS start, books.book_duration AS duration FROM books NATURAL JOIN forms NATURAL JOIN rooms WHERE (books.book_date = '${book_date}' and rooms.room_id = ${room_id});`;
             db.query(query, (err, result) => {
                 console.log(query);
                 if (err) {

@@ -129,12 +129,12 @@ router.get('/home', (req, res) => {
     res.render('Mainpage');
 })
 
-router.get('/order-details', (req, res) => {
+router.get('/order-details', (req, res) => { 
     if (temp.username) {
         res.render('OrderDetailsPage');
     } else {
         res.redirect('/home');
-    }
+    }  
 })
 
 router.get('/order-resume', (req, res) => {
