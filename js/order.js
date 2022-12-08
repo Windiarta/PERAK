@@ -19,33 +19,37 @@ var order = {
                     console.log('Couldn\'t connect to database: from /check');
                     res.end('Couldn\'t connect to database: from /check');
                 } else {
-                    var i = 0;
-                    if (result.rows[0].avai === 'AVAILABLE') {
-                        while (i < result.rows.length) {
-                            book_start = result.rows[i].start;
-                            duration = result.rows[i].duration;
-                            book_end = book_start + duration;
-                            if (check_start > book_start && check_start < book_end) {
-                                console.log("Start before others end");
-                                flag = 1;
-                                break;
-                            }
-                            if (check_end > book_start && check_end < book_end) {
-                                console.log("End before others start");
-                                flag = 1;
-                                break;
-                            }
-                            i += 1;
-                        }
-                        if (flag == 1) {
-                            res.end('NA');
-                        } else {
-                            res.end('AVAILABLE');
-                        }
+                    if (result.rows.length == 0) {
+                        console.log("Room is available");
+                        res.send(val);
                     } else {
-                        res.end('MAINTENANCE');
+                        var i = 0;
+                        if (result.rows[0].avai === 'AVAILABLE') {
+                            while (i < result.rows.length) {
+                                book_start = result.rows[i].start;
+                                duration = result.rows[i].duration;
+                                book_end = book_start + duration;
+                                if (check_start > book_start && check_start < book_end) {
+                                    console.log("Start before others end");
+                                    flag = 1;
+                                    break;
+                                }
+                                if (check_end > book_start && check_end < book_end) {
+                                    console.log("End before others start");
+                                    flag = 1;
+                                    break;
+                                }
+                                i += 1;
+                            }
+                            if (flag == 1) {
+                                res.end('NA');
+                            } else {
+                                res.end('AVAILABLE');
+                            }
+                        } else {
+                            res.end('MAINTENANCE');
+                        }
                     }
-                
                 }
             });
         }
@@ -61,35 +65,43 @@ var order = {
         flag = 0;
         const query = `select rooms.availability as avai, books.book_time_start as start, books.book_duration as duration from books, rooms where (books.book_date = '${book_date}' and rooms.room_id = ${room_id});`;
         db.query(query, (err, result) => {
-            console.log(query);
             if (err) {
                 console.log('Couldn\'t connect to database: from /timecheck');
                 res.end('Couldn\'t connect to database: from /timecheck');
             } else {
-                var i = 0;
-                if (result.rows[0].avai === 'AVAILABLE') {
-                    var val = [];
-                    for (j = 0; j < 24; j++) {
-                        val[j] = '0';
-                    }
-                    while (i < result.rows.length) {
-                        book_start = result.rows[i].start;
-                        duration = result.rows[i].duration;
-                        book_end = book_start + duration;
-                        for (x = book_start; x <= book_end; x += 1) {
-                            val[x] = '1';
-                        }
-                        i += 1;
-                    }
+                var val = [];
+                for (j = 0; j < 24; j++) {
+                    val[j] = '0';
+                }
+                if (result.rows.length == 0) {
+                    console.log("Room is available");
                     var timer = '';
                     for (i = 0; i < 24; i += 1) {
                         timer += val[i];
                     }
                     res.end(timer);
                 } else {
-                    res.end('MAINTENANCE');
-                }
+                    var i = 0;
+                    if (result.rows[0].avai === 'AVAILABLE') {
 
+                        while (i < result.rows.length) {
+                            book_start = result.rows[i].start;
+                            duration = result.rows[i].duration;
+                            book_end = book_start + duration;
+                            for (x = book_start; x <= book_end; x += 1) {
+                                val[x] = '1';
+                            }
+                            i += 1;
+                        }
+                        var timer = '';
+                        for (i = 0; i < 24; i += 1) {
+                            timer += val[i];
+                        }
+                        res.end(timer);
+                    } else {
+                        res.end('MAINTENANCE');
+                    }
+                }
             }
         });
     },
