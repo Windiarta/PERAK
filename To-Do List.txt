@@ -1,1 +1,7 @@
-user agreement
+Desain yang kurang: 
+- About Us : isinya text aja
+- Admin Order : isinya list dalam bentuk tabel atau card yang isinya detail order, bisa accept order atau reject order 
+- Admin User agreement : isinya list dalam bentuk tabel atau card yang isinya nama, email, dan no WA dari user. admin bisa acc atau reject
+- User Order : isinya sama kayak admin order, cuma beda di backendnya aja
+- Desain kalau mau buat di homepage dlu
+- tombol logout

@@ -5,32 +5,35 @@ var confirmationCode;
 var auth = {
     login: function (req, db, res) {
         temp = req.session;
-        temp.username = req.body.username;
-        temp.password = req.body.password;
         /**
          * Database Access : Collecting Login Information
          */
-        const query = `SELECT * FROM users WHERE username = '${temp.username}'`;
+        const query = `SELECT * FROM users WHERE username = '${req.body.username}'`;
         db.query(query, (err, result) => {
             if (err || !result.rows[0]) {
                 console.log('Username doesn\'t exist');
-                res.send('fail')
+                res.end('fail')
+            } else if (result.rows[0].stats == "REJECTED") {
+                res.end('fail1');
             } else {
-                /**
-                 * Checking Password
-                 */
-                bcrypt.compare(temp.password, result.rows[0].password, (err, ress) => {
+                bcrypt.compare(req.body.password, result.rows[0].password, (err, ress) => {
                     if (err) {
-                        console.log('Incorrect password');
-                        res.end('fail2')
+                        console.log(err);
                     } else {
-                        temp.user_id = result.rows[0].user_id;
-                        temp.stats = result.rows[0].stats;
-                        res.end('done');
+                        if (!ress) {
+                            res.end('fail2');
+                        } else {
+                            temp.user_id = result.rows[0].user_id;
+                            temp.stats = result.rows[0].status;
+                            console.log(temp.stats);
+                            temp.username = req.body.username;
+                            res.send('done');
+                        }
                     }
                 });
             }
         });
+        return temp;
     },
 
     register: function (req, db, res) {
@@ -38,7 +41,8 @@ var auth = {
         /**
          * Password hashing
          */
-        if (req.body.verificationCode == confirmationCode) {
+        const code = confirmationCode;
+        if (req.body.verificationCode == code) {
             bcrypt.hash(req.body.password, 10, (err, hash) => {
                 if (err) {
                     return res.status(500).json({
@@ -52,7 +56,7 @@ var auth = {
                 adm = false;       //default 0
                 role = req.body.role;
                 const query = `INSERT INTO users VALUES ((SELECT count(user_id) + 1 FROM users), '${usr}', '${hash}', '${email}', '${whatsapp}', '${stats}', '${adm}', '${role}');`;
-
+                console.log(query);
                 db.query(query, (err, result) => {
                     if (err) {
                         console.log('Gagal Registrasi');
@@ -65,13 +69,13 @@ var auth = {
             })
         } else {
             console.log('Verification Failed');
-            console.log('code generated: ', confirmationCode);
+            console.log('code generated: ', code);
             console.log('code input: ', req.body.verificationCode);
             res.end('Verification failed');
         }
     },
 
-    validate: function (req, db, res, user, pass, transport) {
+    validate: function (req, db, res, transport) {
         if (ValidateEmail(req.body.email)) {
             temp = req.session;
             temp.username = req.body.username;

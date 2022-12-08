@@ -72,16 +72,22 @@
                 username = $('#usernamelogin').val();
                 pass = $('#passwordlogin').val();
                     
-                $.post('/login', { username: username, password: pass }, function(data) {
+                $.post('/login', { username: username, password: pass }, function (data) {
+                    console.log(data);
                     if (data === 'done') {
-                        window.location.href = '/home';
                         window.alert('Login Sukses');
+                        window.location.href = '/home';
                     }
-                    else if (data === 'fail'){
+                    else if (data === 'fail') {
                         window.alert('Login Gagal : Username Salah');
-                    } 
-                    else if (data === 'fail2'){
+                    }
+                    else if (data === 'fail1') {
+                        window.alert('Login Gagal : Akun ditolak, silahkan hubungi admin');
+                    }
+                    else if (data === 'fail2') {
                         window.alert('Login Gagal : Password Salah');
+                    } else {
+                        window.alert("Something Wrong in Login.ejs");
                     }
                 });
             });

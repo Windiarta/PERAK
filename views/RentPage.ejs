@@ -120,11 +120,23 @@
                                 <img src="https://drive.google.com/uc?export=view&id=${data[i].room_photo}" />
                             </div>
                             <div class="text">
-                            </div>
+                            </div>`
+                console.log(data[i].availability);
+                if (data[i].availability == 'MAINTENANCE') {
+                    tx += `
                             <button class="buy-button details">
-                                <a href="details?id=${data[i].room_id}">Rent Now</a>
+                                Maintenance
                             </button>
                         </div>`
+                } else {
+                    tx += `
+                        <a href="details?id=${data[i].room_id}">
+                            <button class="buy-button details" >
+                                Rent Now
+                            </button></a>
+                        </div>`
+                }
+                    
             }
             document.getElementById("rooms").innerHTML = tx;
         });
