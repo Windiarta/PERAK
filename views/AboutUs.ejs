@@ -13,7 +13,7 @@
     <!-- AOS -->
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
-    <title>INI LOGINPAGE</title>
+    <title>PERAK MAINPAGE</title>
 </head>
 
 <body>
@@ -35,34 +35,37 @@
                 </div>
             </div>
         </nav>
-    </header>
         
-            <!-- START OF COMMENT -->
-            <div class="loginbox" id="login">
-                <div class="subheadertxt">
-                    <b>Login</b>
+        <!--<br>
+        <a href="https://drive.google.com/uc?export=download&id=1BIMOT2aD1BBcTLBsTU734l5I8sEdKect">
+            <img src="https://drive.google.com/uc?export=view&id=1BIMOT2aD1BBcTLBsTU734l5I8sEdKect">
+        </a>
+        <div class="Makara-Wrapper" id="Makara">
+            <img SRC = "images/makara-ui-ft.png">
+            
+        </div>
+    -->
+
+
+        <section class="home" id="home">
+            <div class="container home-wrapper">
+                <div class="content-left" data-aos="fade-right">
+                    <h1 class="heading">FACILITY RENTING  MADE EASIER with PERAK<span>FTUI</span></h1>
+                    <p class="subheading">
+                        PERAK make room rents easier for many people to use it and improve the accessibility of the facilities that are available in the Faculty of Engineering.
+                    </p>
+                <div class="content-right" data-aos="fade-left">
+                    <div class="img-wrapper">
+                        <img src="assets/img/hero-tavel.png" alt="">
+                    </div>
+
                 </div>
-                <div class="basictxt">
-                    Username:
-                </div>
-                <div>
-                    <input type="text" class="inputbox" id="usernamelogin" placeholder="username">
-                </div>
-                <div class="basictxt">
-                    Password:
-                </div>
-                <div>
-                    <input type="password" class="inputbox" id="passwordlogin" placeholder="password">
-                </div>
-                <div>
-                    <input type="button" class="button" id="submitslogin" value="Login">
-                </div>
-                <div class="subbasictxt">
-                    Don't Have Account?
-                    <a href="/register" class="link">Sign Up</a>
-                </div>
+
             </div>
-            <!-- END OF COMMENT -->
+        </section>
+    </header>
+
+    <!-- Produk end -->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script>
@@ -72,7 +75,7 @@
                 username = $('#usernamelogin').val();
                 pass = $('#passwordlogin').val();
                     
-                $.post('/login', { username: username, password: pass }, function(data) {
+                $.post('/login', { username: username, pass: pass }, function(data) {
                     if (data === 'done') {
                         window.location.href = '/home';
                         window.alert('Login Sukses');
