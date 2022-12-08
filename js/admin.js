@@ -151,15 +151,17 @@ var admin = {
                 console.log('Something Error');
                 res.end('Something Error');
             } else {
-                const query = `SELECT * FROM books NATURAL JOIN forms`;
-                db.query(query, (err1, res1) => {
-                    if (err1) {
-                        console.log("Something error");
-                    } else {
-                        console.log(res1.rows);
-                        res.send(res1.rows);
-                    }
-                });
+                if (result.rows[0].admin) {
+                    const query = `SELECT * FROM books NATURAL JOIN forms`;
+                    db.query(query, (err1, res1) => {
+                        if (err1) {
+                            console.log("Something error");
+                        } else {
+                            console.log(res1.rows);
+                            res.send(res1.rows);
+                        }
+                    });
+                }
             }
         });
     },
@@ -172,20 +174,22 @@ var admin = {
                 console.log('Something Error');
                 res.end('Something Error');
             } else {
-                var acc = 'PENDING';
-                if (req.body.accept == false) {
-                    acc = 'REJECTED';
-                } else if (req.body.accept == true) {
-                    acc = 'ACCEPTED';
-                }
-                const query = `UPDATE INTO books SET stats = '${acc}';`;
-                db.query(query, (err1, res1) => {
-                    if (err1) {
-                        console.log("Something error");
-                    } else {
-                        res.end(acc);
+                if (result.rows[0].admin) {
+                    var acc = 'PENDING';
+                    if (req.body.accept == false) {
+                        acc = 'REJECTED';
+                    } else if (req.body.accept == true) {
+                        acc = 'ACCEPTED';
                     }
-                });
+                    const query = `UPDATE INTO books SET stats = '${acc}';`;
+                    db.query(query, (err1, res1) => {
+                        if (err1) {
+                            console.log("Something error");
+                        } else {
+                            res.end(acc);
+                        }
+                    });
+                }
             }
         });
     },
