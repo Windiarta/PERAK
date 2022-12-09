@@ -126,6 +126,9 @@ router.get('/register', (req, res) => {
     res.render('register');
 })
 
+router.get('/adminpage', (req, res) => {
+    res.render ('AdminPage');
+})
 router.get('/aboutus', (req, res) => {
     res.render('AboutUs');
 })

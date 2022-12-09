@@ -1567,3 +1567,48 @@ section {
     width: 1500px;
     padding: 5%;
 }
+
+.AdminButton .addbutton{
+    display: flex;
+    color: #ffffff;
+	background-color: #ff7b00;
+	font-size: 19px;
+	border: 1px solid #2d63c8;
+	padding: 15px 50px;
+	cursor: pointer
+}
+
+.AdminButton:hover .addbutton{
+    color: #ff7300;
+	background-color: #ffffff;
+}
+
+.AdminButton .deletebutton{
+    display: flex;
+    color: #ffffff;
+	background-color: #ff8d22;
+	font-size: 19px;
+	border: 1px solid #2d63c8;
+	padding: 15px 50px;
+	cursor: pointer
+}
+
+.AdminButton:hover .deletebutton{
+    color: #ff7300;
+	background-color: #ffffff;
+}
+
+.AdminButton .editbutton{
+    display: flex;
+    color: #ffffff;
+	background-color: #ff7b00;
+	font-size: 19px;
+	border: 1px solid #2d63c8;
+	padding: 15px 50px;
+	cursor: pointer
+}
+
+.AdminButton:hover .editbutton{
+    color: #ff7300;
+	background-color: #ffffff;
+}
