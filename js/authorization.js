@@ -25,6 +25,7 @@ var auth = {
                         } else {
                             temp.user_id = result.rows[0].user_id;
                             temp.stats = result.rows[0].status;
+                            temp.admin = result.rows[0].admin;
                             console.log(temp.stats);
                             temp.username = req.body.username;
                             res.send('done');

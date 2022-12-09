@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Windiarta/PERAK#readme",
   "dependencies": {
+    "@mobiscroll/javascript-lite": "^4.10.9",
     "alert": "^5.1.1",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",

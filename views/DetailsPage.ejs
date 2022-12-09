@@ -12,6 +12,8 @@
 
     <!-- AOS -->
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
 
     <title>PERAK HOMEPAGE</title>
 </head>
@@ -36,76 +38,115 @@
             </div>
         </nav>
     </header>
-        <!-- Forms section -->
-        <section>
-            <form action="datepicker">
-                <label for="datepick">Pick Date of Rent:</label>
-                <input type="date" id="datepick" name="datepick">
-                <input type="button" id="checktime" value="Check"/>
+    <!-- Forms section -->
+    <section>
+        <form action="datepicker">
+            <input type="text" name="date" value="12-22-2022" />
+        </form>
+        <div>
+            <form>
+                Choose Start Time:
+                <select name="start" id="starttime" value="-">
+                    <option value="-">-</option>
+                </select>
             </form>
-            <div class="timepick">
-                <label for="timepick">Pick Time of Rent:</label>
-                <input type="number" id="timepick" placeholder="7-22">
-            </div>
-            <div class="endtime">
-                <label for="endtime">Until</label>
-                <input type="number" id="endtime" placeholder="The end of the rent">
-            </div>
-            <div class="activityname">
-                <label for="activityname">What are you going to do in the facility?</label>
-                <input type="text" id="activityname" placeholder="e.g. Gathering, Outbount">
-            </div>
-            <div class="attendance">
-                <label for="attendance">How many people will use the facility?</label>
-                <input type="number" id="attendance" placeholder="10-1000">
-            </div>
-            <div class="letter">
-                <label for="letter">Activity Letter</label>
-                <input type="text" id="letter" placeholder="input URL">
-            </div>
-            <div class="facilities">
-                <label for="facilities">How many people will use the facility?</label>
-                <textarea cols="30" rows="10" id="facilities" placeholder="Description"></textarea>
-            </div>
-            <div class="consumption">
-                <label for="consumption">Consumption</label>
-                <input type="checkbox" id="consumption" placeholder="input URL">
-            </div>
-            <div>
-                <input type="button" id="submitrent" value="Submit">
-            </div>
-        </section>
+            <form>
+                Choose End Time:
+                <select name="end" id="endtime" value="-">
+                    <option value="-">-</option>
+                </select>
+            </form>
+        </div>
+        <div class="activityname">
+            <label for="activityname">What are you going to do in the facility?</label>
+            <input type="text" id="activityname" placeholder="e.g. Gathering, Outbount">
+        </div>
+        <div class="attendance">
+            <label for="attendance">How many people will use the facility?</label>
+            <input type="number" id="attendance" placeholder="5-1000" min="5" max="1000" value="20">
+        </div>
+        <div class="letter">
+            <label for="letter">Activity Letter</label>
+            <input type="text" id="letter" placeholder="input URL">
+        </div>
+        <div class="facilities">
+            <label for="facilities">What Facilities Do You Need? Meybe We Can Prepare Them For You</label>
+            <textarea cols="30" rows="10" id="facilities" placeholder="Description"></textarea>
+        </div>
+        <div class="consumption">
+            <label for="consumption">Consumption</label>
+            <input type="checkbox" id="consumption" placeholder="input URL">
+        </div>
+        <div>
+            <input type="button" id="submitrent" value="Submit">
+        </div>
+    </section>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-        <script>
-            jQuery(document).ready(function ($) {
-                var query = window.location.search.substring(1);
-                var code = query.split("=");
-                var room = code[1];
-                var datepick, timepick, endtime, activityname, attendance, letter, facilities, consumption;
-                $('#checktime').click(function () {
-                    datepick = $('#datepick').val().toString();
-                    $.post('/timecheck', { room_id: room, date: datepick }, function (data) {
-                        console.log(data);
-                        //DATA isinya adalah 24 karakter atau MAINTENANCE dengan ketentuan sbb:
-                        //0 = Available
-                        //1 = Unavailable
-                        //
-                        //Bit ke N menunjukan jam ke N (contoh 001 -> jam 0 sama jam 1 kosong, jam 2 ada yang pakai)
-                        //
-                        //MAINTENANCE = Ruangan tidak dapat digunakan
-                    });
-                })
-                
-                $('#submitrent').click(function () {
-                    datepick = $('#datepick').val().toString();
-                    timepick = $('#timepick').val();
-                    endtime = $('#endtime').val();
-                    activityname = $('#activityname').val();
-                    attendance = $('#attendance').val();
-                    letter = $('#letter').val();
-                    facilities = $('#facilities').val();
-                    consumption = $('#consumption').val();
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script>
+        var datepick, timepick, endtime, activityname, attendance, letter, facilities, consumption;
+        
+        $(function () {
+            var query = window.location.search.substring(1);
+            var code = query.split("=");
+            var room = code[1];
+            var minhour = 7;
+            var maxhour = 22;
+            $('input[name="date"]').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                minYear: 2022,
+                maxYear: parseInt(moment().format('YYYY'), 10)
+            }, function (start, end, label) {
+                date = start.format('MM-DD-YYYY');
+                window.alert(date);
+                $.post('/timecheck', { room_id: room, date: date }, function (data) {
+                    console.log(data);
+                    var html = '`<option value="-">-</option>`';
+                    for (i = minhour; i <= maxhour; i += 1) {
+                        if (data[i] == '0') {
+                            html += `<option value="${i}">${i}</option>`;
+                        } else {
+                            html += `<option value="${i}" disabled>${i}</option>`;
+                        }
+                    }
+                    document.getElementById('starttime').innerHTML = html;
+                });
+            });;
+            $('#starttime').trigger('change');
+            $('#starttime').change(function () {
+                $.post('/timecheck', { room_id: room, date: date }, function (data) {
+                    console.log(data);
+                    x = parseInt($('#starttime').val());
+                    var html = '`<option value="-">-</option>`';
+                    for (i = minhour; i <= maxhour+1; i += 1) {
+                        if (data[i] == '0' && i > x) {
+                            html += `<option value="${i}">${i}</option>`;
+                        } else {
+                            html += `<option value="${i}" disabled>${i}</option>`;
+                        }
+                    }
+                    document.getElementById('endtime').innerHTML = html;
+                });
+            });
+            var query = window.location.search.substring(1);
+            var code = query.split("=");
+            var room = code[1];
+            $('#submitrent').click(function () {
+                datepick = date;
+                timepick = $('#starttime').val();
+                endtime = $('#endtime').val();
+                activityname = $('#activityname').val();
+                attendance = $('#attendance').val();
+                letter = $('#letter').val();
+                facilities = $('#facilities').val();
+                consumption = $('#consumption').val();
+                if (timepick == '-' || endtime == '-') {
+                    window.alert("Invalid Time Input");
+                } else {
                     $.post('/check', { room_id: room, start: timepick, end: endtime, date: datepick }, function (data) {
                         console.log(data);
                         if (data == 'MAINENANCE') {
@@ -127,23 +168,25 @@
                             window.alert(data);
                         }
                     });
-                    
-                    
-                });
+                }
             });
-        </script>
+        });
 
-        <!-- AOS -->
-        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-        <script>
-            AOS.init({
-                duration: 1000
-            });
-        </script>
+    </script>
 
-        <!-- Swiper JS -->
-        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-        <script src="assets/js/main.js"></script>
+
+
+    <!-- AOS -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000
+        });
+    </script>
+
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
 </body>
 
 </html>

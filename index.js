@@ -100,12 +100,15 @@ router.get('/', (req, res) => {
     }
 });
 
-router.get('/details', (req, res)=>{
+router.get('/details', (req, res) => {
+    res.render('DetailsPage');
+    /*
     if (temp.username) {
         res.render('DetailsPage');
     } else {
         res.redirect('/home');
     }
+    */
 })
 
 //nanti ganti jadi facility aja routenya
@@ -120,6 +123,19 @@ router.get('/rent', (req, res) => {
 
 router.get('/login', (req, res) => {
     res.render('Login');
+})
+
+router.get('/login2', (req, res) => {
+    res.render('Login2');
+})
+
+router.get('/admin', (req, res) => {
+    res.render('AdminPage');
+    if (temp.admin) {
+        res.render('AdminPage');
+    } else {
+        res.redirect('/');
+    }
 })
 
 router.get('/register', (req, res) => {

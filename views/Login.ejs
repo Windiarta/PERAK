@@ -75,7 +75,6 @@
                 $.post('/login', { username: username, password: pass }, function (data) {
                     console.log(data);
                     if (data === 'done') {
-                        window.alert('Login Sukses');
                         window.location.href = '/home';
                     }
                     else if (data === 'fail') {

@@ -19,36 +19,32 @@ var order = {
                     console.log('Couldn\'t connect to database: from /check');
                     res.end('Couldn\'t connect to database: from /check');
                 } else {
-                    if (result.rows.length == 0) {
+                    if (result.rows.length == 0 || result.rows[0].avai === 'AVAILABLE') {
                         console.log("Room is available");
-                        res.send(val);
-                    } else {
                         var i = 0;
-                        if (result.rows[0].avai === 'AVAILABLE') {
-                            while (i < result.rows.length) {
-                                book_start = result.rows[i].start;
-                                duration = result.rows[i].duration;
-                                book_end = book_start + duration;
-                                if (check_start > book_start && check_start < book_end) {
-                                    console.log("Start before others end");
-                                    flag = 1;
-                                    break;
-                                }
-                                if (check_end > book_start && check_end < book_end) {
-                                    console.log("End before others start");
-                                    flag = 1;
-                                    break;
-                                }
-                                i += 1;
+                        while (i < result.rows.length) {
+                            book_start = result.rows[i].start;
+                            duration = result.rows[i].duration;
+                            book_end = book_start + duration;
+                            if (check_start > book_start && check_start < book_end) {
+                                console.log("Start before others end");
+                                flag = 1;
+                                break;
                             }
-                            if (flag == 1) {
-                                res.end('NA');
-                            } else {
-                                res.end('AVAILABLE');
+                            if (check_end > book_start && check_end < book_end) {
+                                console.log("End before others start");
+                                flag = 1;
+                                break;
                             }
-                        } else {
-                            res.end('MAINTENANCE');
+                            i += 1;
                         }
+                        if (flag == 1) {
+                            res.end('NA');
+                        } else {
+                            res.end('AVAILABLE');
+                        }
+                    } else {
+                        res.end('MAINTENANCE');
                     }
                 }
             });
