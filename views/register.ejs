@@ -1,104 +1,74 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="css/Style.css">
-    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <!-- Link Swiper's CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+  </head>
+  <body>
 
-    <!-- AOS -->
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-
-    <title>INI REGISTER PAGE</title>
-</head>
-
-<body>
     <header>
-        <nav class="navbar">
-            <div class="container nav-wrapper">
-                <a href="#" class="logo">PERAK<span>FTUI</span></a>
-                <div class="menu-wrapper">
-                    <ul class="menu">
-                        <li class="menu-item"><a href="home" class="menu-link active">Home</a></li>
-                        <li class="menu-item"><a href="login" class="menu-link">Login</a></li>
-                        <li class="menu-item"><a href="register" class="menu-link">Register</a></li>
-                        <li class="menu-item"><a href="aboutus" class="menu-link">About us</a></li>
-                        <li class="menu-item"><a href="#" class="menu-link">Logout</a></li>
-                    </ul>
-                    <a href="rent" class="btn-member">Start Renting</a>
-                </div>
-                <div class="menu-toggle bx bxs-grid-alt">
-                </div>
-            </div>
-        </nav>
+      <nav class="navbar">
+          <div class="container nav-wrapper">
+              <a href="home" class="logo">PERAK<span>FTUI</span></a>
+              <div class="menu-wrapper">
+                  <ul class="menu">
+                      <li class="menu-item"><a href="home" class="menu-link active">Home</a></li>
+                      <li class="menu-item"><a href="login" class="menu-link">Login</a></li>
+                      <li class="menu-item"><a href="register" class="menu-link">Register</a></li>
+                      <li class="menu-item"><a href="aboutus" class="menu-link">About us</a></li>
+                      <li class="menu-item"><a href="#" class="menu-link">Logout</a></li>
+                  </ul>
+                  <a href="rent" class="btn-member">Start Renting</a>
+              </div>
+              <div class="menu-toggle bx bxs-grid-alt">
+              </div>
+          </div>
+      </nav>
 
-<body>
-    <div class="backgroundbox" style="display:flex">
-        <div class="registerbox" id="register">
-            <div class="subheadertxt">
-                <b>Register</b>
-            </div>
-            <div class="basictxt">
-                Email:
-            </div>
-            <div>
-                <input type="email" class="inputbox" id="email" placeholder="email">
-            </div>
-            <div class="basictxt">
-                whatsapp:
-            </div>
-            <div>
-                <input type="tel" class="inputbox" id="whatsapp" placeholder="08xxxxxxxx">
-            </div>
-            <div class="basictxt">
-                Username:
-            </div>
-            <div>
-                <input type="text" class="inputbox" id="usernames" placeholder="username">
-            </div>
-            <div class="basictxt">
-                Password: (Nanti buat validasi password biar ga typo)
-            </div>
-            <div>
-                <input type="password" class="inputbox" id="passwords" placeholder="password">
-            </div>
-            <div>
-                <input type="password" class="inputbox" id="temppass" placeholder="Validate password">
-            </div>
-            <div class="Roles">
-                <p> Roles <i class="dropdown roles"></i></p>
-                <select id="role">
-                    <option value="FTUI-STUDENTS">FTUI-STUDENTS</option>
-                    <option value="LECTURER">LECTURER</option>
-                    <option value="NON-FTUI STUDENTS">NON-FTUI STUDENTS</option>
-                </select>
-            </div>
-            <div class="basictxt">
-                Data Validation: (Habis di klik, data lain tidak dapat diganti)
-            </div>
-            <div>
-                <input type="button" class="button" id="validate" value="validate">
-            </div>
-            <div class="basictxt">
-                Code:
-            </div>
-            <div>
-                <input type="number" class="inputbox" id="code" placeholder="CHECK EMAIL">
-            </div>
-            <div>
-                <input type="button" class="button" id="submits" value="Register">
-            </div>
-            <div class="subbasictxt">
-                Already Have Account?
-                <a href="/login" class="link">Log In</a>
-            </div>
-        </div>
-    </div>
+      <div class="text-center">
+
+        <form style="max-width: 480px; margin: auto;">
+          <h3 class="h1 mb-4" style="font-family: Raleway; color: white;">REGISTER</h3>
+          
+          <input type="email" id="email" class="form-control" placeholder="Email" required autofocus>
+          
+          <input type="number" id="whatsapp" class="form-control" placeholder="Whatsapp Number (62+)" required autofocus>
+          
+          <input type="text" id="usernames" class="form-control" placeholder="Username" required autofocus>
+          
+          <input type="password" id="passwords" class="form-control" placeholder="Password" required autofocus>
+          
+          <input type="password" id="temppass" class="form-control" placeholder="Confirm Password" required autofocus>
+
+          <select id="role" class="form-control" placeholer="Choose Role" required autofocus>
+            <option value="FTUI-STUDENTS">FTUI-STUDENTS</option>
+            <option value="LECTURER">LECTURER</option>
+            <option value="NON-FTUI STUDENTS">NON-FTUI STUDENTS</option>
+          </select>    
+        
+          <div class="validate-btn text-center mt-2">
+            <button class="btn btn-lg btn-secondary btn-block" id="validate">Validate Data</button>
+          </div>
+
+          <input type="number" id="code" class="form-control" placeholder="Check Email" required autofocus>
+          
+          <input type="password" id="passwordlogin" class="form-control" placeholder="Password" required autofocus>
+
+          <div class="register-btn mt-2">
+            <button class="btn btn-lg btn-secondary btn-block mt-10" id="submits">Register</button>
+          </div>
+          
+        </form>
+
+      </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
     <script>
         jQuery(document).ready(function ($) {
             var username, pass, email, whatsapp, stats, adm, role, code;
@@ -152,6 +122,6 @@
             });
         });
     </script>
-</body>
 
+  </body>
 </html>

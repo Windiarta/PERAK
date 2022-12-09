@@ -125,10 +125,6 @@ router.get('/login', (req, res) => {
     res.render('Login');
 })
 
-router.get('/login2', (req, res) => {
-    res.render('Login2');
-})
-
 router.get('/admin', (req, res) => {
     res.render('AdminPage');
     if (temp.admin) {
@@ -145,6 +141,7 @@ router.get('/register', (req, res) => {
 router.get('/adminpage', (req, res) => {
     res.render ('AdminPage');
 })
+
 router.get('/aboutus', (req, res) => {
     res.render('AboutUs');
 })
@@ -159,7 +156,7 @@ router.get('/aboutus', (req, res) => {
 
 router.get('/order-details', (req, res) => { 
     if (temp.username) {
-        res.render('OrderDetailsPage');
+        res.render('OrderDetails');
     } else {
         res.redirect('/home');
     }  

@@ -20,7 +20,7 @@
     <header>
         <nav class="navbar">
             <div class="container nav-wrapper">
-                <a href="#" class="logo">PERAK<span>FTUI</span></a>
+                <a href="home" class="logo">PERAK<span>FTUI</span></a>
                 <div class="menu-wrapper">
                     <ul class="menu">
                         <li class="menu-item"><a href="home" class="menu-link active">Home</a></li>
@@ -116,8 +116,11 @@
                 tx += `
                         <div class="card">
                             <div class="title">${data[i].room_name} </div>
-                            <div class="image">
-                                <img src="https://drive.google.com/uc?export=view&id=${data[i].room_photo}" />
+                            <div class="card-image">
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    <img alt="Card image cap" class="card-img-top embed-responsive-item" src="https://drive.google.com/uc?export=view&id=${data[i].room_photo}" />
+                                </div>
+                                <img src="" />
                             </div>
                             <div class="text">
                             </div>`
