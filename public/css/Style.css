@@ -1861,3 +1861,9 @@ p {
         height: 50vh;
         object-fit: contain;
     }
+
+    .adminbtn-control{
+        display: flex;
+        justify-content: center;
+        justify-items: center;
+    }

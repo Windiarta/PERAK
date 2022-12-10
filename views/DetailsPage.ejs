@@ -40,47 +40,48 @@
         </nav>
     </header>
     <!-- Forms section -->
-    <div class="text-center" style="max-width: 480px; margin: auto;">
+    <div class="text-center mt-4" style="max-width: 480px; margin: auto;">
         <form style="max-width: 480px; margin: auto;">
                 <form action="datepicker" class="form-control">
-                    <input type="text" name="date" value="12-22-2022" />
+                    <label for="datepicker" style="color: white;">Choose Date:</label>
+                    <input type="text" id = "datepicker" name="date" value="12-22-2022" class="form-control" />
                 </form>
                 <div>
-                    <form>
-                        Choose Start Time:
-                        <select name="start" id="starttime" value="-">
+                    <form
+                        <label for="starttime" style="color: white;">Choose Start Time:</label>
+                        <select name="start" id="starttime" class="form-control" value="-">
                             <option value="-">-</option>
                         </select>
                     </form>
                     <form>
-                        Choose End Time:
-                        <select name="end" id="endtime" value="-">
+                        <label for="endtime" style="color: white;">Choose End Time:</label>
+                        <select name="end" id="endtime" class="form-control" value="-">
                             <option value="-">-</option>
                         </select>
                     </form>
                 </div>
                 <div class="activityname">
-                    <label for="activityname">What are you going to do in the facility?</label>
+                    <label for="activityname" style="color: white;">What are you going to do in the facility?</label>
                     <input type="text" id="activityname" placeholder="e.g. Gathering, Outbount" class="form-control" required autofocus>
                 </div>
                 <div class="attendance">
-                    <label for="attendance">How many people will use the facility?</label>
+                    <label for="attendance" style="color: white;">How many people will use the facility?</label>
                     <input type="number" id="attendance" placeholder="5-1000" min="5" max="1000" value="20" class="form-control" required autofocus>
                 </div>
                 <div class="letter">
-                    <label for="letter">Activity Letter</label>
+                    <label for="letter" style="color: white;">Activity Letter</label>
                     <input type="text" id="letter" placeholder="input URL" class="form-control" required autofocus>
                 </div>
-                <div class="facilities">
-                    <label for="facilities">What Facilities Do You Need? Meybe We Can Prepare Them For You</label>
+                <div class="facilities" >
+                    <label for="facilities" style="color: white;">What Facilities Do You Need? Meybe We Can Prepare Them For You</label>
                     <textarea cols="30" rows="10" id="facilities" placeholder="Description" class="form-control" required autofocus></textarea>
                 </div>
-                <div class="consumption">
+                <div class="consumption" style="color: white;">
                     <label for="consumption">Consumption</label>
-                    <input type="checkbox" id="consumption" placeholder="input URL" class="form-control" required autofocus>
+                    <input type="text" id="consumption" placeholder="input URL" class="form-control" required autofocus>
                 </div>
                 <div>
-                    <input type="button" id="submitrent" value="Submit" class="form-control" required autofocus>
+                    <input type="button" id="submitrent" value="Submit" class="btn btn-secondary btn-lg mt-3" required autofocus>
                 </div>
         </form>
     </div>
