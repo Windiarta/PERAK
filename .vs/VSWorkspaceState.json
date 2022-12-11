@@ -6,9 +6,9 @@
     "\\bootstrap-timepicker\\js",
     "\\js",
     "\\public",
-    "\\public\\css",
     "\\public\\scss",
     "\\views"
   ],
+  "SelectedNode": "\\views\\RentPage.ejs",
   "PreviewInSolutionExplorer": false
 }

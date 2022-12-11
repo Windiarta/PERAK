@@ -125,11 +125,10 @@ router.get('/login', (req, res) => {
 })
 
 router.get('/admin', (req, res) => {
-    res.render('AdminPage');
     if (temp.admin) {
         res.render('AdminPage');
     } else {
-        res.redirect('/');
+        res.redirect('/home');
     }
 })
 
@@ -138,7 +137,12 @@ router.get('/register', (req, res) => {
 })
 
 router.get('/adminpage', (req, res) => {
-    res.render ('AdminPage');
+    
+    if (temp.admin) {
+        res.render('AdminPage');
+    } else {
+        res.redirect('/home');
+    }
 })
 
 router.get('/aboutus', (req, res) => {
@@ -159,11 +163,7 @@ router.get('/profile', (req, res) => {
 })
 
 router.get('/order-details', (req, res) => { 
-    if (temp.admin) {
-        res.render('OrderDetails');
-    } else {
-        res.redirect('/home');
-    }  
+    res.render('OrderDetails');
 })
 
 router.get('/admin-order', (req, res) => {
@@ -183,7 +183,7 @@ router.get('/add_facility', (req, res) => {
 })
 
 router.get('/edit_facility', (req, res) => {
-    if (temp.username) {
+    if (temp.admin) {
         res.render('editfac');
     } else {
         res.redirect('/rent');
@@ -191,7 +191,7 @@ router.get('/edit_facility', (req, res) => {
 })
 
 router.get('/manage_user', (req, res) => {
-    if (temp.username) {
+    if (temp.admin) {
         res.render('ManageUser');
     } else {
         res.redirect('/home');
