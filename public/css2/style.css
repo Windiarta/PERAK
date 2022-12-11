@@ -199,3 +199,18 @@ h2 {
 .control--checkbox input:disabled:checked ~ .control__indicator {
   background-color: #FFA451;
   opacity: .2; }
+
+.embed-responsive .card-img-top {
+    object-fit: contain;
+}
+
+.card-img-top {
+  width: 100%;
+  height: 15vw;
+  object-fit: contain;
+}
+
+.embed-responsive{
+  object-fit: contain;
+}
+
