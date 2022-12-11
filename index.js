@@ -146,11 +146,7 @@ router.get('/aboutus', (req, res) => {
 })
 
 router.get('/home', (req, res) => {
-    if (typeof (temp) !== "undefined") {
-        res.render('Mainpage');
-    } else { 
-        res.render('Homepage');
-    }
+    res.render('Mainpage')
     
 })
 
