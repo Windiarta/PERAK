@@ -148,7 +148,18 @@ var order = {
             }
         });
     },
-    
+
+    getroom: function (req, db, res) {
+        const query = `SELECT * FROM rooms WHERE;`;
+        db.query(query, (err, result) => {
+            if (err) {
+                console.log(err);
+                res.end('Something Error');
+            } else {
+                res.send(result.rows);
+            }
+        });
+    },
 }
 
 module.exports = order;

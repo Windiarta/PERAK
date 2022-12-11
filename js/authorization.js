@@ -4,7 +4,7 @@ var confirmationCode;
 
 var auth = {
     login: function (req, db, res) {
-        temp = req.session;
+        var temp = req.session;
         /**
          * Database Access : Collecting Login Information
          */
@@ -12,23 +12,27 @@ var auth = {
         db.query(query, (err, result) => {
             if (err || !result.rows[0]) {
                 console.log('Username doesn\'t exist');
-                res.end('fail')
-            } else if (result.rows[0].stats == "REJECTED") {
+                res.end('fail');
+            }
+            else if (result.rows[0].stats === "REJECTED") {
                 res.end('fail1');
             } else {
                 bcrypt.compare(req.body.password, result.rows[0].password, (err, ress) => {
                     if (err) {
                         console.log(err);
+                        code = err;
                     } else {
+                        console.log(ress);
                         if (!ress) {
-                            res.end('fail2');
+                            res.send('fail2');
                         } else {
                             temp.user_id = result.rows[0].user_id;
                             temp.stats = result.rows[0].status;
                             temp.admin = result.rows[0].admin;
                             console.log(temp.stats);
                             temp.username = req.body.username;
-                            res.send('done');
+                            res.end('done');
+                            console.log(temp);
                         }
                     }
                 });

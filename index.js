@@ -192,8 +192,9 @@ router.post('/form', (req, res) => {
     order.form(req, db, res, temp.username);
 })
 
-router.post('/login', (req, res) =>{
+router.post('/login', (req, res) => {
     temp = auth.login(req, db, res);
+    console.log(temp);
 });
 
 router.post('/validation', (req, res) => {

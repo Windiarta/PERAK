@@ -1,12 +1,14 @@
 {
   "ExpandedNodes": [
     "",
+    "\\bootstrap-timepicker",
+    "\\bootstrap-timepicker\\css",
+    "\\bootstrap-timepicker\\js",
     "\\js",
     "\\public",
     "\\public\\css",
     "\\public\\scss",
     "\\views"
   ],
-  "SelectedNode": "\\views\\DetailsPage.ejs",
   "PreviewInSolutionExplorer": false
 }
