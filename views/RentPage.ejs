@@ -127,9 +127,10 @@
                 console.log(data[i].availability);
                 if (data[i].availability == 'MAINTENANCE') {
                     tx += `
-                            <button class="buy-button details">
+                        <a href="details?id=${data[i].room_id}">
+                            <button class="buy-button details" >
                                 Maintenance
-                            </button>
+                            </button></a>
                         </div>`
                 } else {
                     tx += `

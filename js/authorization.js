@@ -22,14 +22,12 @@ var auth = {
                         console.log(err);
                         code = err;
                     } else {
-                        console.log(ress);
                         if (!ress) {
                             res.send('fail2');
                         } else {
                             temp.user_id = result.rows[0].user_id;
                             temp.stats = result.rows[0].status;
                             temp.admin = result.rows[0].admin;
-                            console.log(temp.stats);
                             temp.username = req.body.username;
                             res.end('done');
                         }
@@ -145,6 +143,30 @@ var auth = {
             console.log("Invalid email address");
             res.end("Invalid email address");
         }
+    },
+
+    getthisuser: function (req, db, res, user_id) {
+        const query = `SELECT * FROM users WHERE user_id = ${user_id};`;
+        db.query(query, (err, result) => {
+            if (err) {
+                console.log(err);
+                res.end('Something Error');
+            } else {
+                res.send(result.rows);
+            }
+        });
+    },
+
+    getusers: function (req, db, res) {
+        const query = `SELECT * FROM users ORDER BY user_id ASC;`;
+        db.query(query, (err, result) => {
+            if (err) {
+                console.log(err);
+                res.end('Something Error');
+            } else {
+                res.send(result.rows);
+            }
+        });
     },
 
     logout: function (req, res) {

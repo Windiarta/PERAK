@@ -147,11 +147,20 @@ router.get('/aboutus', (req, res) => {
 })
 
 router.get('/home', (req, res) => {
-    res.render('Mainpage');
+    if (typeof (temp) !== "undefined") {
+        res.render('Mainpage');
+    } else { 
+        res.render('Homepage');
+    }
+    
 })
 
 router.get('/aboutus', (req, res) => {
     res.render('AboutUs');
+})
+
+router.get('/profile', (req, res) => {
+    res.render('Profile')
 })
 
 router.get('/order-details', (req, res) => { 
@@ -170,8 +179,36 @@ router.get('/admin-order', (req, res) => {
     }
 })
 
+router.get('/add_facility', (req, res) => {
+    if (temp.username) {
+        res.render('addfac');
+    } else {
+        res.redirect('/home');
+    }
+})
+
+router.get('/edit_facility', (req, res) => {
+    if (temp.username) {
+        res.render('editfac');
+    } else {
+        res.redirect('/rent');
+    }
+})
+
+router.get('/manage_user', (req, res) => {
+    if (temp.username) {
+        res.render('ManageUser');
+    } else {
+        res.redirect('/home');
+    }
+})
+
 router.post('/getroom', (req, res) => {
     order.getroom(req, db, res);
+})
+
+router.post('/getthisroom', (req, res) => {
+    order.getthisroom(req, db, res);
 })
 
 router.post('/check', (req, res) => {
@@ -180,6 +217,10 @@ router.post('/check', (req, res) => {
 
 router.post('/timecheck', (req, res) => {
     order.timecheck(req, db, res);
+})
+
+router.post('/getusers', (req, res) => {
+    auth.getusers(req, db, res);
 })
 
 router.post('/form', (req, res) => {
@@ -200,6 +241,10 @@ router.post('/register', (req, res) => {
     auth.register(req, db, res);
 })
 
+router.post('/getthisuser', (req, res) => {
+    auth.getthisuser(req, db, res, temp.user_id);
+})
+
 router.post("/get_admin", (req, res) => {
     admin.get_adm(req, db, res);
 })
@@ -217,18 +262,14 @@ router.post('/acc_order', (req, res) => {
 })
 
 router.post('/update_status', (req, res) => {
-    admin.update_stat(req, db, res);
+    admin.update_stat(req, db, res, temp.user_id);
 });
 
-router.post('/add_facility', (req, res) => {
+router.post('/add_fac', (req, res) => {
     admin.add_fac(req, db, res);
 });
 
-router.post('/remove_facility', (req, res) => {
-    admin.rm_fac(req, db, res);
-});
-
-router.post('/edit_facility', (req, res) => {
+router.post('/edit_fac', (req, res) => {
     admin.edit_fac(req, db, res);
 });
 

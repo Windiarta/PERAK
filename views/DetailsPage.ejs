@@ -30,7 +30,7 @@
                         <li class="menu-item"><a href="login" class="menu-link">Login</a></li>
                         <li class="menu-item"><a href="register" class="menu-link">Register</a></li>
                         <li class="menu-item"><a href="aboutus" class="menu-link">About us</a></li>
-                        <li class="menu-item"><a href="#" class="menu-link">Logout</a></li>
+                        <li class="menu-item"><a href="logout" class="menu-link">Logout</a></li>
                     </ul>
                     <a href="rent" class="btn-member">Start Renting</a>
                 </div>
@@ -42,47 +42,50 @@
     <!-- Forms section -->
     <div class="text-center mt-4" style="max-width: 480px; margin: auto;">
         <form style="max-width: 480px; margin: auto;">
-                <form action="datepicker" class="form-control">
-                    <label for="datepicker" style="color: white;">Choose Date:</label>
-                    <input type="text" id = "datepicker" name="date" value="12-22-2022" class="form-control" />
-                </form>
-                <div>
-                    <form
+            <form action="datepicker" class="form-control">
+                <label for="datepicker" style="color: white;">Choose Date:</label>
+                <input type="text" id="datepicker" name="date" class="form-control" />
+            </form>
+            <div>
+                <form
                         <label for="starttime" style="color: white;">Choose Start Time:</label>
                         <select name="start" id="starttime" class="form-control" value="-">
                             <option value="-">-</option>
                         </select>
                     </form>
-                    <form>
-                        <label for="endtime" style="color: white;">Choose End Time:</label>
-                        <select name="end" id="endtime" class="form-control" value="-">
-                            <option value="-">-</option>
-                        </select>
-                    </form>
-                </div>
-                <div class="activityname">
-                    <label for="activityname" style="color: white;">What are you going to do in the facility?</label>
-                    <input type="text" id="activityname" placeholder="e.g. Gathering, Outbount" class="form-control" required autofocus>
-                </div>
-                <div class="attendance">
-                    <label for="attendance" style="color: white;">How many people will use the facility?</label>
-                    <input type="number" id="attendance" placeholder="5-1000" min="5" max="1000" value="20" class="form-control" required autofocus>
-                </div>
-                <div class="letter">
-                    <label for="letter" style="color: white;">Activity Letter</label>
-                    <input type="text" id="letter" placeholder="input URL" class="form-control" required autofocus>
-                </div>
-                <div class="facilities" >
-                    <label for="facilities" style="color: white;">What Facilities Do You Need? Meybe We Can Prepare Them For You</label>
-                    <textarea cols="30" rows="10" id="facilities" placeholder="Description" class="form-control" required autofocus></textarea>
-                </div>
-                <div class="consumption" style="color: white;">
-                    <label for="consumption">Consumption</label>
-                    <input type="text" id="consumption" placeholder="input URL" class="form-control" required autofocus>
-                </div>
-                <div>
-                    <input type="button" id="submitrent" value="Submit" class="btn btn-secondary btn-lg mt-3" required autofocus>
-                </div>
+                <form>
+                    <label for="endtime" style="color: white;">Choose End Time:</label>
+                    <select name="end" id="endtime" class="form-control" value="-">
+                        <option value="-">-</option>
+                    </select>
+                </form>
+            </div>
+            <div class="activityname">
+                <label for="activityname" style="color: white;">What are you going to do in the facility?</label>
+                <input type="text" id="activityname" placeholder="e.g. Gathering, Outbount" class="form-control" required autofocus>
+            </div>
+            <div class="attendance">
+                <label for="attendance" style="color: white;">How many people will use the facility?</label>
+                <input type="number" id="attendance" placeholder="5-1000" min="5" max="1000" value="20" class="form-control" required autofocus>
+            </div>
+            <div class="letter">
+                <label for="letter" style="color: white;">Activity Letter</label>
+                <input type="text" id="letter" placeholder="input URL" class="form-control" required autofocus>
+            </div>
+            <div class="facilities">
+                <label for="facilities" style="color: white;">What Facilities Do You Need? Meybe We Can Prepare Them For You</label>
+                <textarea cols="30" rows="10" id="facilities" placeholder="Description" class="form-control" required autofocus></textarea>
+            </div>
+            <div class="consumption" style="color: white;">
+                <label for="consumption">Consumption</label>
+                <input type="text" id="consumption" placeholder="input URL" class="form-control" required autofocus>
+            </div>
+            <div id="submitbutton">
+                <input type="button" id="submitrent" value="Submit" class="btn btn-secondary btn-lg mt-3" required autofocus>
+            </div>
+            <div>
+                <input type="button" id="edit" value="Edit" class="btn btn-secondary btn-lg mt-3" required autofocus>
+            </div>
         </form>
     </div>
     
@@ -100,11 +103,17 @@
             var room = code[1];
             var minhour = 7;
             var maxhour = 22;
+
+            $.post('getthisroom', { room_id: room }, function (data) {
+                if (data[0].availability === "MAINTENANCE") {
+                    document.getElementById('submitbutton').innerHTML =`<input type="button" id="submitrent" value="Room Under Maintenance" class="btn btn-secondary btn-lg mt-3" required autofocus disabled>`
+                }
+            })
+
             $('input[name="date"]').daterangepicker({
                 singleDatePicker: true,
                 showDropdowns: true,
-                minYear: 2022,
-                maxYear: parseInt(moment().format('YYYY'), 10)
+                minDate: new Date()
             }, function (start, end, label) {
                 date = start.format('MM-DD-YYYY');
                 window.alert(date);
@@ -174,6 +183,9 @@
                         }
                     });
                 }
+            });
+            $('#edit').click(function () {
+                window.location.href = `/edit_facility?id=${room}`;
             });
         });
 

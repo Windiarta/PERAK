@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/Style.css">
+  </head>
+  <body>
+
+    <header>
+      <nav class="navbar">
+          <div class="container nav-wrapper">
+              <a href="home" class="logo">PERAK<span>FTUI</span></a>
+              <div class="menu-wrapper">
+                  <ul class="menu">
+                      <li class="menu-item"><a href="home" class="menu-link active">Home</a></li>
+                      <li class="menu-item"><a href="login" class="menu-link">Login</a></li>
+                      <li class="menu-item"><a href="register" class="menu-link">Register</a></li>
+                      <li class="menu-item"><a href="aboutus" class="menu-link">About us</a></li>
+                      <li class="menu-item"><a href="#" class="menu-link">Logout</a></li>
+                  </ul>
+                  <a href="rent" class="btn-member">Start Renting</a>
+              </div>
+              <div class="menu-toggle bx bxs-grid-alt">
+              </div>
+          </div>
+      </nav>
+
+      <div class="text-center">
+
+          <form style="max-width: 480px; margin: auto;">
+              <h3 class="h1 mb-4" style="font-family: Raleway; color: white;">Edit Facility</h3>
+
+              <input type="text" id="name" class="form-control" placeholder="Facility Name" required autofocus>
+
+              <input type="text" id="location" class="form-control" placeholder="Facility Location" required autofocus>
+
+              <input type="url" id="photo" class="form-control" placeholder="Photo (https://drive.google.com/file/d/XXX/view?usp=share_link)" required autofocus>
+              <div class="register-btn mt-2">
+                  <input type="button" class="btn btn-lg btn-secondary btn-block mt-10" id="imgprev" value="Preview Photo">
+              </div>
+
+              <textarea cols="30" rows="10" id="desc" placeholder="Description" class="form-control" required autofocus></textarea>
+
+              <select id="avai" class="form-control" placeholer="Availability" required autofocus>
+                  <option value="AVAILABLE">AVAILABLE</option>
+                  <option value="MAINTENANCE">MAINTENANCE</option>
+              </select>
+              <div class="register-btn mt-2">
+                  <input type="button" class="btn btn-lg btn-secondary btn-block mt-10" id="submits" value="Edit Facility">
+              </div>
+
+          </form>
+
+      </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <script>
+        jQuery(document).ready(function ($) {
+            var query = window.location.search.substring(1);
+            var code = query.split("=");
+            var room = code[1];
+
+            $.post('/getthisroom', { room_id: room }, function (data) {
+                console.log(data);
+                document.getElementById('name').value = data[0].room_name;
+                document.getElementById('location').value = data[0].room_building;
+                document.getElementById('photo').value = `https://drive.google.com/file/d/${data[0].room_photo}/view?usp=share_link`;
+                document.getElementById('desc').value = data[0].room_description;
+                document.getElementById('avai').value = data[0].availability;
+            });
+            
+            $('#submits').click(function () {
+                var name = $('#name').val();
+                var loc = $('#location').val();
+                var photo = $('#photo').val();
+                var desc = $('#desc').val();
+                var avai = $('#avai').val();
+                $.post('/edit_fac', { room_name: name, room_building: loc, photo: photo, room_description: desc, availability: avai, room_id: room }, function (data) {
+                    window.alert(data);
+                });
+            });
+
+            $('#imgprev').click(function () {
+                var photo = $('#photo').val();
+                window.open(photo, '_blank');
+            });
+        });
+    </script>
+
+  </body>
+</html>

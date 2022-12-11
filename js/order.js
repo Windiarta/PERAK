@@ -137,8 +137,20 @@ var order = {
         })
     },
 
+    getthisroom: function (req, db, res) {
+        const query = `SELECT * FROM rooms WHERE room_id = ${req.body.room_id};`;
+        db.query(query, (err, result) => {
+            if (err) {
+                console.log(err);
+                res.end('Something Error');
+            } else {
+                res.send(result.rows);
+            }
+        });
+    }, 
+
     getroom: function (req, db, res) {
-        const query = `SELECT * FROM rooms;`;
+        const query = `SELECT * FROM rooms ORDER BY room_id ASC;`;
         db.query(query, (err, result) => {
             if (err) {
                 console.log(err);

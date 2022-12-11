@@ -81,6 +81,38 @@
 
         }
         jQuery(document).ready(function ($) {
+            $.post('/get_order', { all: 0 }, function (data) {
+                if (data !== 'Something Error') {
+                    var html = '';
+                    console.log(data);
+                    for (i = 0; i < data.length; i += 1) {
+                        html += `<tr>
+                        <td>${data[i].now.slice(0, 8)}</td>
+                        <td>${data[i].room_name}</td>
+                        <td>${data[i].room_building}</td>
+                        <td>${data[i].book_date.slice(0, 10)}</td>
+                        <td>${data[i].book_time_start}:00 - ${data[i].book_time_start + data[i].book_duration}:00</td>
+                        <td>${data[i].activity_name}</td>
+                        <td>${data[i].attendance}</td>
+                        <td>${data[i].stats}</td>
+                        <td>${data[i].facility}</td>
+                        <td>${data[i].consumption}</td>
+                        <td><a href="${data[i].letter}" target="_blank" style="color:blue">Click to show Document</a></td>
+                        <div class="register-btn mt-2">
+                            <input type="button" class="btn btn-lg btn-secondary btn-block mt-10" onclick="change(1, ${data[i].book_id})" value="Accept">
+                         </div>
+                        <div class="register-btn mt-2">
+                            <input type="button" class="btn btn-lg btn-secondary btn-block mt-10" onclick="change(0, ${data[i].book_id})" value="Reject">
+                        </div>
+                        <br><br>
+                    </tr>`
+                    }
+                    document.getElementById('table_data').innerHTML = html;
+                }
+                else {
+                    window.alert('Something Error');
+                }
+            })
             $('#filter').trigger('change');
             $('#filter').change(function () {
                 var val = document.getElementById('filter').value;
@@ -109,10 +141,10 @@
                         <td>${data[i].consumption}</td>
                         <td><a href="${data[i].letter}" target="_blank" style="color:blue">Click to show Document</a></td>
                         <div class="register-btn mt-2">
-                            <input type="button" class="btn btn-lg btn-secondary btn-block mt-10" onclick="change(1, ${data[i].book_id})">Accept</input>
+                            <input type="button" class="btn btn-lg btn-secondary btn-block mt-10" onclick="change(1, ${data[i].book_id})" value="Accept">
                          </div>
                         <div class="register-btn mt-2">
-                            <input type="button" class="btn btn-lg btn-secondary btn-block mt-10" onclick="change(0, ${data[i].book_id})">Reject</input>
+                            <input type="button" class="btn btn-lg btn-secondary btn-block mt-10" onclick="change(0, ${data[i].book_id})" value="Accept">
                         </div>
                         <br><br>
                     </tr>`
