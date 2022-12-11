@@ -17,8 +17,8 @@ body{
 }
 
 *{
-    margin: 0;
-    padding: 0;
+    margin: 10px;
+    padding: 10px;
     box-sizing: border-box;
     list-style: none;
     text-decoration: none;
@@ -251,13 +251,12 @@ section{
 }
 
 .content-right .img-wrapper{
+    display: flex;
     max-width: 800px;
 }
 .content-right .img-wrapper img{
-    width: 100%;
+    width: 50%;
 }
-
-
 
 .home-wrapper .content-left{
     flex: 0 0 50%;
@@ -374,7 +373,7 @@ section{
 .produk-wrapper .card-produk{
     position: relative;
     width: 400px;
-    border-radius: 20px;
+    border-radius: 50px;
     overflow-y: hidden;
 }
 .row2 .detail-produk{
@@ -432,6 +431,9 @@ section{
 
 .swiper-slide-card-produk{
     size: 50%;
+    width: 100%;
+    height: 20vh;
+    object-fit: contain;
 }
 .detail-produk .body-card{
     margin: 25px 0;
@@ -1559,7 +1561,11 @@ section {
 }
 
 .order-table{
-    border: 1px solid black;
+    margin-top: 3;
+    margin-left: auto;
+    margin-right: auto;
+    border: 5px solid white;
+    visibility: visible;
     color: white;
     font-family: var(--main-font);
     font-weight: 100;
@@ -1854,16 +1860,12 @@ p {
 
     .embed-responsive .card-img-top {
         object-fit: contain;
-    }
-
-    .swiper-slide-card-produk{
-        width: 100%;
-        height: 50vh;
-        object-fit: contain;
-    }
+    }   
 
     .adminbtn-control{
         display: flex;
         justify-content: center;
         justify-items: center;
+        margin: auto;
+        width: 600px;
     }

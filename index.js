@@ -125,11 +125,12 @@ router.get('/login', (req, res) => {
 })
 
 router.get('/admin', (req, res) => {
+    res.render('AdminPage');
     if (temp.admin) {
         res.render('AdminPage');
     } else {
         res.redirect('/home');
-    }
+    } 
 })
 
 router.get('/register', (req, res) => {
@@ -191,6 +192,8 @@ router.get('/edit_facility', (req, res) => {
 })
 
 router.get('/manage_user', (req, res) => {
+    res.render('ManageUser');
+
     if (temp.admin) {
         res.render('ManageUser');
     } else {
