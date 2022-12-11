@@ -152,12 +152,15 @@ var admin = {
                 res.end('Something Error');
             } else {
                 if (result.rows[0].admin) {
-                    const query = `SELECT * FROM books NATURAL JOIN forms`;
-                    db.query(query, (err1, res1) => {
+                    if (req.body.all == 0) {
+                        query1 = `SELECT * FROM books NATURAL JOIN forms NATURAL JOIN rooms ORDER BY book_date ASC`;
+                    } else {
+                        query1 = `SELECT * FROM books NATURAL JOIN forms NATURAL JOIN rooms WHERE book_date > current_timestamp ORDER BY book_date ASC`;
+                    }
+                    db.query(query1, (err1, res1) => {
                         if (err1) {
                             console.log("Something error");
                         } else {
-                            console.log(res1.rows);
                             res.send(res1.rows);
                         }
                     });
@@ -181,7 +184,7 @@ var admin = {
                     } else if (req.body.accept == true) {
                         acc = 'ACCEPTED';
                     }
-                    const query = `UPDATE INTO books SET stats = '${acc}';`;
+                    const query = `UPDATE books SET stats = '${acc}' WHERE book_id = ${req.body.book_id};`;
                     db.query(query, (err1, res1) => {
                         if (err1) {
                             console.log("Something error");

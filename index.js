@@ -162,17 +162,12 @@ router.get('/order-details', (req, res) => {
     }  
 })
 
-router.get('/order-resume', (req, res) => {
-    res.send('OrderResume');
-    //res.render('ResumePage');
-    /*
-    if (req.session.username) {
-        res.render('ResumePage');
+router.get('/admin-order', (req, res) => {
+    if (temp.username) {
+        res.render('AdminOrder');
     } else {
-        res.redirect('/');
-        //res.redirect("/err403page");
+        res.redirect('/home');
     }
-    */
 })
 
 router.post('/getroom', (req, res) => {
@@ -207,6 +202,10 @@ router.post('/register', (req, res) => {
 
 router.post("/get_admin", (req, res) => {
     admin.get_adm(req, db, res);
+})
+
+router.post('/usr_order', (req, res) => {
+    order.usr_order(req, db, res, temp.user_id);
 })
 
 router.post("/get_order", (req, res) => {

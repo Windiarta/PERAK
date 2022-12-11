@@ -149,8 +149,8 @@ var order = {
         });
     },
 
-    getroom: function (req, db, res) {
-        const query = `SELECT * FROM rooms WHERE;`;
+    usr_order: function (req, db, res, user_id) {
+        const query = `SELECT * FROM books NATURAL JOIN forms NATURAL JOIN rooms WHERE user_id = ${user_id} ORDER BY book_date ASC;`;
         db.query(query, (err, result) => {
             if (err) {
                 console.log(err);

@@ -32,7 +32,6 @@ var auth = {
                             console.log(temp.stats);
                             temp.username = req.body.username;
                             res.end('done');
-                            console.log(temp);
                         }
                     }
                 });
