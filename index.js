@@ -111,7 +111,6 @@ router.get('/details', (req, res) => {
     */
 })
 
-//nanti ganti jadi facility aja routenya
 router.get('/rent', (req, res) => {
     res.render('RentPage');
    /* if (temp.username) {
@@ -164,7 +163,7 @@ router.get('/profile', (req, res) => {
 })
 
 router.get('/order-details', (req, res) => { 
-    if (temp.username) {
+    if (temp.admin) {
         res.render('OrderDetails');
     } else {
         res.redirect('/home');
@@ -172,7 +171,7 @@ router.get('/order-details', (req, res) => {
 })
 
 router.get('/admin-order', (req, res) => {
-    if (temp.username) {
+    if (temp.admin) {
         res.render('AdminOrder');
     } else {
         res.redirect('/home');
@@ -180,7 +179,7 @@ router.get('/admin-order', (req, res) => {
 })
 
 router.get('/add_facility', (req, res) => {
-    if (temp.username) {
+    if (temp.admin) {
         res.render('addfac');
     } else {
         res.redirect('/home');
