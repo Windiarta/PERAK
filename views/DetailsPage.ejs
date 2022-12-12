@@ -74,9 +74,12 @@
                 <label for="facilities" style="color: white;">What Facilities Do You Need? Maybe We Can Prepare Them For You</label>
                 <textarea cols="30" rows="10" id="facilities" placeholder="Description" class="form-control" required autofocus></textarea>
             </div>
-            <div class="consumption" style="color: white;">
-                <label for="consumption">Consumption</label>
-                <input type="text" id="consumption" placeholder="input URL" class="form-control" required autofocus>
+            <div class="consumption">
+                <label for="consumption" class="container" style="color:white;">
+                    Consumption
+                    <input type="checkbox" checked="checked" id="consumption" style="align-content:end;">
+                    <span class="checkmark"></span> 
+                </label>    
             </div>
             <div id="submitbutton">
                 <input type="button" id="submitrent" value="Submit" class="btn btn-secondary btn-lg mt-3" required autofocus>
@@ -114,7 +117,6 @@
                 minDate: new Date()
             }, function (start, end, label) {
                 date = start.format('MM-DD-YYYY');
-                window.alert(date);
                 $.post('/timecheck', { room_id: room, date: date }, function (data) {
                     console.log(data);
                     var html = '`<option value="-">-</option>`';
@@ -131,7 +133,6 @@
             $('#starttime').trigger('change');
             $('#starttime').change(function () {
                 $.post('/timecheck', { room_id: room, date: date }, function (data) {
-                    console.log(data);
                     x = parseInt($('#starttime').val());
                     var html = '`<option value="-">-</option>`';
                     for (i = minhour; i <= maxhour+1; i += 1) {
@@ -160,7 +161,6 @@
                     window.alert("Invalid Time Input");
                 } else {
                     $.post('/check', { room_id: room, start: timepick, end: endtime, date: datepick }, function (data) {
-                        console.log(data);
                         if (data == 'MAINENANCE') {
                             window.alert("Facility is under Maintenance");
                         } else if (data == 'NA') {
@@ -175,6 +175,8 @@
                                 room_id: room, activity: activityname, attendance: attendance, facility: facilities, letter: letter, consumption: con, date: datepick, start: timepick, end: endtime
                             }, function (data1) {
                                 console.log(data1);
+                                window.alert("Order Successful");
+                                window.location.href('/order-details');
                             });
                         } else {
                             window.alert(data);
