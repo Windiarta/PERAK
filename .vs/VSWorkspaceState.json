@@ -6,9 +6,10 @@
     "\\bootstrap-timepicker\\js",
     "\\js",
     "\\public",
+    "\\public\\css",
     "\\public\\scss",
     "\\views"
   ],
-  "SelectedNode": "\\views\\OrderDetails.ejs",
+  "SelectedNode": "\\public\\css\\Style.css",
   "PreviewInSolutionExplorer": false
 }
